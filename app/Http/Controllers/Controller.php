@@ -8,5 +8,6 @@ use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
+    //태스트 주석
     use AuthorizesRequests, ValidatesRequests;
 }
