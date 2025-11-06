@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
+use App\Traits\TruncatesDecimals;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ReferralBonus extends Model
 {
-    use HasFactory;
+    use HasFactory, TruncatesDecimals;
 
     protected $fillable = [
         'user_id',
-        'deposit_id',
+        'mining_id',
         'transfer_id',
         'referrer_id',
         'bonus',
@@ -26,9 +27,9 @@ class ReferralBonus extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function deposit()
+    public function mining()
     {
-        return $this->belongsTo(AssetTransfer::class, 'deposit_id', 'id');
+        return $this->belongsTo(Mining::class, 'mining_id', 'id');
     }
 
     public function transfer()
@@ -39,6 +40,11 @@ class ReferralBonus extends Model
     public function referrer()
     {
         return $this->belongsTo(User::class, 'referrer_id', 'id');
+    }
+
+    public function matchings()
+    {
+        return $this->hasMany(ReferralMatching::class, 'bonus_id', 'id');
     }
 
 }

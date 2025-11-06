@@ -71,6 +71,7 @@ class IncomeController extends Controller
             ->when($request->filled('type'), function ($query) use ($request) {
                 return $query->where('type', $request->type);
             })
+            ->where('income_id', $income->id)
             ->where('status', 'completed')
             ->latest()
             ->take($limit)
@@ -80,6 +81,7 @@ class IncomeController extends Controller
             ->when($request->filled('type'), function ($query) use ($request) {
                 return $query->where('type', $request->type);
             })
+            ->where('income_id', $income->id)
             ->where('status', 'completed')
             ->count();
 
@@ -90,6 +92,8 @@ class IncomeController extends Controller
 
     public function loadMore(Request $request)
     {
+        $income_id = Hashids::decode($request->id);
+
         $offset = $request->input('offset', 0);
         $limit = $request->input('limit', 10);
 
@@ -97,6 +101,7 @@ class IncomeController extends Controller
             ->when($request->filled('type'), function ($query) use ($request) {
                 return $query->where('type', $request->type);
             })
+            ->where('income_id', $income_id)
             ->where('status', 'completed')
             ->latest();
 
@@ -112,9 +117,33 @@ class IncomeController extends Controller
                 'referrer_id' => match ($item->type) {
                     'referral_bonus' => optional($item->referralBonus)->referrer_id,
                     'referral_matching' => optional($item->referralMatching)->referrer_id,
+                    'level_bonus' => optional($item->levelBonus)->referrer_id,
+                    'level_matching' => optional($item->levelMatching)->referrer_id,
                     default => null,
                 },
-                'type_text' => $item->type_text,
+                'type_text' => match ($item->type) {
+                    'referral_bonus' => $item->type_text . (
+                        !empty(optional(optional(optional($item->referralBonus)->mining)->policy)->mining_locale_name)
+                            ? '<br>(' . $item->referralBonus->mining->policy->mining_locale_name . ')'
+                            : ''
+                        ),
+                    'referral_matching' => $item->type_text . (
+                        !empty(optional(optional(optional($item->referralMatching)->bonus)->mining)->policy->mining_locale_name)
+                            ? '<br>(' . $item->referralMatching->bonus->mining->policy->mining_locale_name . ')'
+                            : ''
+                        ),
+                    'level_bonus' => $item->type_text . (
+                        !empty(optional(optional(optional($item->levelBonus)->mining)->policy)->mining_locale_name)
+                            ? '<br>(' . $item->levelBonus->mining->policy->mining_locale_name . ')'
+                            : ''
+                        ),
+                    'level_matching' => $item->type_text . (
+                        !empty(optional(optional(optional($item->levelMatching)->bonus)->mining)->policy->mining_locale_name)
+                            ? '<br>(' . $item->levelMatching->bonus->mining->policy->mining_locale_name . ')'
+                            : ''
+                        ),
+                    default => $item->type_text,
+                },
             ];
         });
 

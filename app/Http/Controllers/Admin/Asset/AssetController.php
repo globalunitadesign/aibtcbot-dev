@@ -4,15 +4,13 @@ namespace App\Http\Controllers\Admin\Asset;
 
 use App\Exports\Asset\AssetDepositExport;
 use App\Exports\Asset\AssetWithdrawalExport;
-use App\Exports\Asset\AssetStakingRefundExport;
+use App\Exports\Asset\AssetMiningExport;
+use App\Exports\Asset\AssetMiningRefundExport;
 use App\Exports\Asset\AssetManualDepositExport;
-use App\Models\UserProfile;
-use App\Models\Asset;
 use App\Models\AssetTransfer;
 use App\Http\Controllers\Controller;
 use App\Services\S3Service;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 
@@ -24,7 +22,7 @@ class AssetController extends Controller
     {
         $this->s3Service = $s3Service;
     }
-   
+
     public function list(Request $request)
     {
         $list = AssetTransfer::where('asset_transfers.type', $request->input('type', 'deposit'))
@@ -65,7 +63,7 @@ class AssetController extends Controller
             }
         })
         ->when($request->filled('start_date') && $request->filled('end_date'), function ($query) use ($request) {
-            $start = Carbon::parse($request->start_date)->startOfDay(); 
+            $start = Carbon::parse($request->start_date)->startOfDay();
             $end = Carbon::parse($request->end_date)->endOfDay();
 
             $query->whereBetween('asset_transfers.created_at', [$start, $end]);
@@ -73,7 +71,7 @@ class AssetController extends Controller
         ->latest()
         ->orderBy('id', 'desc')
         ->paginate(10);
-  
+
         return view('admin.asset.list', compact('list'));
     }
 
@@ -81,7 +79,9 @@ class AssetController extends Controller
     {
         $view = AssetTransfer::find($id);
 
-        if ($view->image_urls[0]) {
+        $download_url = null;
+
+        if (!empty($view->image_urls) && isset($view->image_urls[0])) {
             $download_url = $this->s3Service->generateDownloadUrl($view->image_urls[0], 600);
         }
 
@@ -93,22 +93,29 @@ class AssetController extends Controller
     {
         $current = now()->toDateString();
 
-        switch ($request->type) {
-            case 'deposit' :
-                return Excel::download(new AssetDepositExport($request->all()), '회원 입금 내역 '.$current.'.xlsx');
-            break;
+        $exports = [
+            'deposit'        => AssetDepositExport::class,
+            'withdrawal'     => AssetWithdrawalExport::class,
+            'mining'         => AssetMiningExport::class,
+            'mining_refund'  => AssetMiningRefundExport::class,
+            'manual_deposit' => AssetManualDepositExport::class,
+        ];
 
-            case 'withdrawal' :
-                return Excel::download(new AssetWithdrawalExport($request->all()), '회원 출금 내역 '.$current.'.xlsx');
-            break;
+        $file_names = [
+            'deposit'        => '자산 입금 내역',
+            'withdrawal'     => '자산 출금 내역',
+            'mining'         => '자산 마이닝 참여 내역',
+            'mining_refund'  => '자산 원금상환 내역',
+            'manual_deposit' => '자산 수동입금 내역',
+        ];
 
-            case 'staking_refund' :
-                return Excel::download(new AssetStakingRefundExport($request->all()), '회원 원금반환 내역 '.$current.'.xlsx');
-            break;
-
-            case 'manual_deposit' :
-                return Excel::download(new AssetManualDepositExport($request->all()), '회원 수동입금 내역 '.$current.'.xlsx');
-            break;
+        if (!isset($exports[$request->type])) {
+            abort(400, '유효하지 않은 타입입니다.');
         }
+
+        $export_class = $exports[$request->type];
+        $file_name = $file_names[$request->type] . ' ' . $current . '.xlsx';
+
+        return Excel::download(new $export_class($request->all()), $file_name);
     }
 }

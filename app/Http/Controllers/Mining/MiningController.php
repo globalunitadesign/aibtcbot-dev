@@ -6,12 +6,12 @@ namespace App\Http\Controllers\Mining;
 use App\Models\Asset;
 use App\Models\AssetTransfer;
 use App\Models\Income;
+use App\Models\Marketing;
 use App\Models\Mining;
 use App\Models\MiningPolicy;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 
 class MiningController extends Controller
@@ -21,20 +21,23 @@ class MiningController extends Controller
 
     }
 
-    public function index()
+    public function index($id)
     {
+        $marketing = Marketing::find($id);
         $assets = Asset::where('user_id', auth()->id())
             ->whereHas('coin', function ($query) {
                 $query->where('is_mining', 'y');
             })
             ->get();
 
-        return view('mining.mining', compact('assets'));
+        return view('mining.mining', compact('marketing', 'assets'));
     }
 
     public function data(Request $request)
     {
-        $Mining = MiningPolicy::where('coin_id', $request->coin)->get();
+        $Mining = MiningPolicy::where('coin_id', $request->coin)
+            ->where('marketing_id', $request->marketing)
+            ->get();
 
         return response()->json($Mining->toArray());
     }
@@ -50,20 +53,23 @@ class MiningController extends Controller
     {
         $mining = MiningPolicy::find($id);
 
+        $marketing = Marketing::find($mining->marketing_id);
+
         $asset = Asset::where('user_id', auth()->id())
             ->where('coin_id', $mining->coin_id)
             ->first();
 
         $balance = $asset->balance;
 
-        $date = $this->getMiningDate($mining->period);
+        $date = $this->getMiningDate($mining);
 
-        return view('mining.confirm', compact('mining', 'date', 'balance'));
+        return view('mining.confirm', compact('marketing', 'mining', 'date', 'balance'));
     }
 
     public function store(Request $request)
     {
 
+        $user = auth()->user();
         $policy = MiningPolicy::find($request->policy);
 
         $asset = Asset::where('user_id', auth()->id())->where('coin_id', $policy->coin_id)->first();
@@ -77,14 +83,33 @@ class MiningController extends Controller
             ]);
         }
 
+        if ($policy->marketing->is_required === 'n') {
+
+            $coin_amount = $user->profile->getMarketingAmount();
+
+            if ($coin_amount['required'] <= 0 ) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' =>  __('mining.required_mining_notice'),
+                ]);
+            }
+
+            if ($request->coin_amount + $coin_amount['other'] > $coin_amount['required'] * 10) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' =>  __('mining.max_mining_amount_notice'),
+                ]);
+            }
+        }
+
         DB::beginTransaction();
 
         try {
 
-            $date = $this->getMiningDate($policy->period);
+            $date = $this->getMiningDate($policy);
 
             $mining = Mining::create([
-                'user_id' => auth()->id(),
+                'user_id' => $user->id,
                 'asset_id' => $asset->id,
                 'refund_id' => $refund->id,
                 'reward_id' => $reward->id,
@@ -93,10 +118,10 @@ class MiningController extends Controller
                 'refund_coin_amount' => $request->refund_coin_amount,
                 'node_amount' => $request->node_amount,
                 'exchange_rate' => $request->exchange_rate,
-                'period' => $policy->period,
+                'split_period' => $policy->split_period,
                 'reward_count' => 0,
+                'reward_limit' => $policy->reward_limit,
                 'started_at' => $date['start'],
-                'ended_at' => $date['end'],
             ]);
 
             AssetTransfer::create([
@@ -113,6 +138,8 @@ class MiningController extends Controller
             $asset->update([
                 'balance' => $asset->balance - $request->coin_amount
             ]);
+
+            $user->profile->referralBonus($mining);
 
             DB::commit();
 
@@ -134,12 +161,11 @@ class MiningController extends Controller
 
     }
 
-    private function getMiningDate($period)
+    private function getMiningDate($policy)
     {
-        $start = Carbon::today()->addDays(1);
+        $start = Carbon::today()->addDays($policy->waiting_period+1);
         return [
             'start' => $start,
-            'end' => $start->copy()->addDays($period-1),
         ];
     }
 

@@ -187,7 +187,6 @@ class AssetTransfer extends Model
 
             $profile->checkUserValidity();
             $profile->checkUserGrade();
-            $profile->referralBonus($this);
 
         } catch (\Throwable $e) {
 

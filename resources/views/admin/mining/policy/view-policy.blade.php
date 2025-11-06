@@ -38,6 +38,12 @@
                             <col style="width: 35%;">
                         </colgroup>
                         <tbody>
+                        <tr>
+                            <th class="text-center align-middle">마케팅</th>
+                            <td class="align-middle" colspan="3">
+                                {{ $view->marketing->marketing_locale_name }}
+                            </td>
+                        </tr>
                             <tr>
                                 <th class="text-center align-middle">참여 코인</th>
                                 <td class="align-middle">
@@ -48,10 +54,10 @@
                                         @endforeach
                                     </select>
                                 </td>
-                                <th class="text-center align-middle">기간</th>
+                                <th class="text-center align-middle">최대 노드 수량</th>
                                 <td class="align-middle d-flex">
-                                    <input type="text" name="period" value="{{ $view->period }}" class="form-control w-25">
-                                    <div class="px-2 d-flex align-items-center">일</div>
+                                    <input type="text" name="node_limit" value="{{ $view->node_limit }}" class="form-control w-25">
+                                    <div class="px-2 d-flex align-items-center">개</div>
                                 </td>
                             </tr>
                             <tr>
@@ -87,10 +93,34 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="text-center align-middle">최대 노드 수량</th>
+                                <th class="text-center align-middle">대기 기간</th>
+                                <td class="align-middle d-flex">
+                                    <input type="text" name="waiting_period" value="{{ $view->waiting_period }}" class="form-control w-25">
+                                    <div class="px-2 d-flex align-items-center">일</div>
+                                </td>
+                                <th class="text-center align-middle">분할 기간</th>
+                                <td class="align-middle d-flex">
+                                    <input type="text" name="split_period" value="{{ $view->split_period }}" class="form-control w-25">
+                                    <div class="px-2 d-flex align-items-center">일</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center align-middle">채굴 제한</th>
                                 <td class="align-middle d-flex" colspan="3">
-                                    <input type="text" name="node_limit" value="{{ $view->node_limit }}" class="form-control w-25">
-                                    <div class="px-2 d-flex align-items-center">개</div>
+                                    <input type="text" name="reward_limit" value="{{ $view->reward_limit }}" class="form-control w-25">
+                                    <div class="px-2 d-flex align-items-center">회</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center align-middle">채굴 가능 요일</th>
+                                <td colspan="3" class="align-middle">
+                                    @foreach($all_days as $key => $label)
+                                        <label class="me-2">
+                                            <input type="checkbox" name="reward_days[]" value="{{ $label }}" class="form-check-input"
+                                                {{ in_array($label, $selected_days) ? 'checked' : '' }}>
+                                            {{ $label }}
+                                        </label>
+                                    @endforeach
                                 </td>
                             </tr>
                         </tbody>
@@ -141,3 +171,7 @@
     </div>
 </div>
 @endsection
+
+@push('script')
+    <script src="{{ asset('js/admin/mining/policy.js') }}"></script>
+@endpush

@@ -48,4 +48,7 @@ return array (
   'dismiss_today' => '今日は表示しない',
   'close' => '閉じる',
   'modify_notice' => '修正済みです。',
+  'maturity_at' => '返済日',
+  'instant' => 'すぐに',
+  'split' => '分割',
 );

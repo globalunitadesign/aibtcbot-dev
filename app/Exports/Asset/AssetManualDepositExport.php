@@ -14,10 +14,10 @@ class AssetManualDepositExport extends BaseAssetExport
             ->leftJoin('coins', 'assets.coin_id', '=', 'coins.id')
             ->leftJoin('users', 'asset_transfers.user_id', '=', 'users.id')
             ->select(
-                'users.id', 
-                'users.name', 
-                'coins.name as coin_name', 
-                'asset_transfers.amount', 
+                'users.id',
+                'users.name',
+                'coins.name as coin_name',
+                'asset_transfers.amount',
                 'asset_transfers.actual_amount',
                 'asset_transfers.status',
                 'asset_transfers.fee',
@@ -32,10 +32,10 @@ class AssetManualDepositExport extends BaseAssetExport
 
         return $this->formatExportRows($results);
     }
-    
+
 
     public function headings(): array
     {
-        return ['번호', 'UID', '이름', '종류', '신청수량', '실제수량', '상태', '수수료', '세금', '반환일자'];
+        return ['번호', 'UID', '이름', '종류', '신청수량', '실제수량', '상태', '수수료', '세금', '일자'];
     }
 }

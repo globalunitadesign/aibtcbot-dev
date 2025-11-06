@@ -5,6 +5,11 @@
     <div class="container-fluid" >
         <ul class="nav nav-tabs mt-3" id="tableTabs" role="tablist" >
             <li class="nav-item" role="presentation">
+                <a href="{{ route('admin.income.policy', ['mode' => 'rank']) }}" class="nav-link active">
+                    직급보너스
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
                 <a href="{{ route('admin.income.policy', ['mode' => 'referral']) }}" class="nav-link">
                     추천보너스
                 </a>
@@ -15,8 +20,13 @@
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a href="{{ route('admin.income.policy', ['mode' => 'rank']) }}" class="nav-link active">
-                    직급보너스
+                <a href="{{ route('admin.income.policy', ['mode' => 'level']) }}" class="nav-link">
+                    레벨보너스
+                </a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a href="{{ route('admin.income.policy', ['mode' => 'level_condition']) }}" class="nav-link">
+                    레벨조건
                 </a>
             </li>
         </ul>
@@ -112,6 +122,7 @@
                 </div>
                 <form method="POST" action="{{ route('admin.income.policy.store') }}" id="ajaxForm" data-confirm-message="정책을 추가하시겠습니까?" >
                     @csrf
+                    <input type="hidden" name="mode" value="rank">
                     <hr>
                     <table class="table table-bordered mt-5 mb-2">
                         <tbody>

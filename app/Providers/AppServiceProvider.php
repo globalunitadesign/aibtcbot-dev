@@ -8,6 +8,8 @@ use App\Models\AssetPolicy;
 use App\Models\ReferralPolicy;
 use App\Models\ReferralMatchingPolicy;
 use App\Models\RankPolicy;
+use App\Models\LevelPolicy;
+use App\Models\LevelConditionPolicy;
 use App\Models\MiningPolicy;
 use App\Models\LanguagePolicy;
 use App\Models\DepositToast;
@@ -30,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
         ReferralPolicy::observe(PolicyObserver::class);
         ReferralMatchingPolicy::observe(PolicyObserver::class);
         RankPolicy::observe(PolicyObserver::class);
+        LevelPolicy::observe(PolicyObserver::class);
+        LevelConditionPolicy::observe(PolicyObserver::class);
         MiningPolicy::observe(PolicyObserver::class);
 
         View::composer('*', function ($view) {

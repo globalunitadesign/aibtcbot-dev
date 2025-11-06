@@ -52,17 +52,17 @@ $(document).ready(function() {
             file_name: file.name,
             directory: 'deposit',
             _token: $('meta[name="csrf-token"]').attr('content')
-        }, function(res) {
-            if (res.status !== 'success') return alertModal(errorNotice);
-            $("input[name='file_key']").val(res.file_key);
+            }, function(res) {
+                if (res.status !== 'success') return alertModal(errorNotice);
+                $("input[name='file_key']").val(res.file_key);
 
-            presignedData = {
-                uploadUrl: res.upload_url,
-                fileKey: res.file_key
-            };
+                presignedData = {
+                    uploadUrl: res.upload_url,
+                    fileKey: res.file_key
+                };
 
-        }).fail(function() {
-            alertModal(errorNotice);
+            }).fail(function() {
+                alertModal(errorNotice);
         });
     });
 

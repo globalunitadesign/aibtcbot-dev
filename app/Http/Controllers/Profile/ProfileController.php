@@ -72,9 +72,9 @@ class ProfileController extends Controller
     public function password()
     {
         $view = UserProfile::join('users', 'user_profiles.user_id', '=', 'users.id')
-        ->select('user_profiles.*', 'users.name', 'users.account')
-        ->where('user_profiles.user_id', '=', Auth::id())
-        ->first();
+            ->select('user_profiles.*', 'users.name', 'users.account')
+            ->where('user_profiles.user_id', '=', Auth::id())
+            ->first();
 
         return view('profile.password', compact('view'));  
     }
@@ -94,7 +94,6 @@ class ProfileController extends Controller
                 'message' => __('auth.password_missmatch_notice'),
             ]);
         }
-
         
         $user->password = Hash::make($request->password);
         $user->save();

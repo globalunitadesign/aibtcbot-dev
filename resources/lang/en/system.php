@@ -48,4 +48,7 @@ return array (
   'dismiss_today' => 'Don\'t show again today',
   'close' => 'Close',
   'modify_notice' => 'Successfully Updated.',
+  'maturity_at' => 'Repayment Date',
+  'instant' => 'Right now',
+  'split' => 'Installment',
 );

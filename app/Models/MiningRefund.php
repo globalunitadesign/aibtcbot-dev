@@ -12,18 +12,18 @@ class MiningRefund extends Model
 
     protected $fillable = [
         'user_id',
-        'staking_id',
+        'mining_id',
         'transfer_id',
         'amount',
     ];
-    
+
     protected $casts = [
         'amount' => 'decimal:9',
     ];
 
-    public function staking()
+    public function mining()
     {
-        return $this->belongsTo(Staking::class, 'staking_id', 'id');
+        return $this->belongsTo(Mining::class, 'mining_id', 'id');
     }
 
     public function transfer()

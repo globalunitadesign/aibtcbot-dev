@@ -14,24 +14,24 @@
 </head>
 <body class="p-0">
 
-<div class="layoutContainer container min-vh-100 overflow-hidden px-0 bg-body border border-sm-0 layout-padding">
-    @if(Auth::check() && !Request::is('register*'))
-        @include('layouts.header')
-    @endif
-
-    <div class="contentContainer">
-        @yield('content')
+    <div class="layoutContainer container min-vh-100 overflow-hidden px-0 bg-body border border-sm-0 layout-padding">
+        @if(Auth::check() && !Request::is('register*'))
+            @include('layouts.header')
+        @endif
+        
+        <div class="contentContainer">
+            @yield('content')
+        </div>
+        
+        @if(Auth::check() && !Request::is('register*'))
+            @include('layouts.footer')
+        @endif
     </div>
 
-    @if(Auth::check() && !Request::is('register*'))
-        @include('layouts.footer')
-    @endif
-</div>
+    @include('components.alert-form')
+    @include('components.confirm-form')
 
-@include('components.alert-form')
-@include('components.confirm-form')
-
-@if(!empty($popups))
+    @if(!empty($popups))
     @foreach($popups as $popup)
         @php
             $popup_data = json_decode($popup->content);

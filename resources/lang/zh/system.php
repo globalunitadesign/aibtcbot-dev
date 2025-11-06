@@ -49,4 +49,7 @@ return array (
   'dismiss_today' => '今日不再提醒',
   'close' => '关闭',
   'modify_notice' => '修改成功。',
+  'maturity_at' => '返还日期',
+  'instant' => '立即',
+  'split' => '分期',
 );

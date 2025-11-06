@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('generate:staking-profit')->dailyAt('00:06');
+        $schedule->command('create:mining-daily-stat')->dailyAt('00:01');
+        $schedule->command('generate:mining-reward')->dailyAt('00:06');
         $schedule->command('reflect:asset-deposit')->dailyAt('00:11');
         $schedule->command('grant:rank-bonus')->dailyAt('00:16');
 

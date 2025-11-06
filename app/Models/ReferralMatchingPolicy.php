@@ -11,6 +11,7 @@ class ReferralMatchingPolicy extends Model
     use HasFactory, TruncatesDecimals;
 
     protected $fillable = [
+        'marketing_id',
         'grade_id',
         'level_1_rate',
         'level_2_rate',

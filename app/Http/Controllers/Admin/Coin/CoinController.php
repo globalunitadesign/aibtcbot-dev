@@ -54,7 +54,7 @@ class CoinController extends Controller
 
             $file_name = '_' . time() . '_' . auth()->id() . '_' . $file->getClientOriginalName();
 
-            $file_path = $file->storeAs('public/uploads/coin', $file_name);
+            $file_path = $file->storeAs('uploads/coin', $file_name, 'public');
             $file_url[] = asset('storage/uploads/coin/' . $file_name);
 
             $data['image_urls'] = $file_url;

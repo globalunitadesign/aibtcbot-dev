@@ -52,11 +52,6 @@ class IncomeTransfer extends Model
         return $this->belongsTo(Income::class, 'income_id', 'id');
     }
 
-    public function profit()
-    {
-        return $this->hasOne(TradingProfit::class, 'transfer_id', 'id');
-    }
-
     public function subscriptionBonus()
     {
         return $this->hasOne(SubscriptionBonus::class, 'transfer_id', 'id');
@@ -72,14 +67,24 @@ class IncomeTransfer extends Model
         return $this->hasOne(ReferralMatching::class, 'transfer_id', 'id');
     }
 
+    public function levelBonus()
+    {
+        return $this->hasOne(LevelBonus::class, 'transfer_id', 'id');
+    }
+
+    public function levelMatching()
+    {
+        return $this->hasOne(LevelMatching::class, 'transfer_id', 'id');
+    }
+
     public function rankBonus()
     {
         return $this->hasOne(RankBonus::class, 'transfer_id', 'id');
     }
 
-    public function reward()
+    public function miningProfit()
     {
-        return $this->hasOne(StakingReward::class, 'transfer_id', 'id');
+        return $this->hasOne(MiningProfit::class, 'transfer_id', 'id');
     }
 
     public function getTypeTextAttribute()
@@ -87,10 +92,16 @@ class IncomeTransfer extends Model
         switch ($this->type) {
             case 'withdrawal' :
                 return __('asset.external_withdrawal');
+            case 'mining_profit' :
+                return __('mining.mining_profit');
             case 'referral_bonus' :
                 return __('asset.referral_bonus');
             case 'referral_matching' :
                 return __('asset.referral_bonus_matching');
+            case 'level_bonus' :
+                return __('mining.mining_level_bonus');
+            case 'level_matching' :
+                return __('mining.mining_matching_bonus');
             case 'rank_bonus' :
                 return __('asset.rank_bonus');
             default :

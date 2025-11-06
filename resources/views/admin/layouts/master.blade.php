@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href=" {{ asset('images/logos/emblem.png') }}" size="32x32"> 
+    <link rel="icon" type="image/png" href=" {{ asset('images/logos/symbol.png') }}" size="32x32">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
     <link rel="stylesheet" href="{{ asset('css/styles.min.css') }}" />
@@ -18,13 +18,13 @@
     <div class="page-wrapper dvh-100" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
     @if(Auth::guard('admin')->check())
         @include('admin.layouts.aside')
-        
+
         @include('admin.layouts.header')
     @endif
         @yield('content')
-      
+
     </div>
-    
+
     @include('components.alert-form')
     @include('components.confirm-form')
 
@@ -42,7 +42,7 @@
             @include('components.toast-form', ['info' => $toast])
         @endforeach
     @endif
-   
-    
+
+
 </body>
 </html>

@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\TruncatesDecimals;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ReferralMatching extends Model
 {
-    use HasFactory;
+    use HasFactory, TruncatesDecimals;
 
     protected $fillable = [
         'user_id',
@@ -16,7 +17,7 @@ class ReferralMatching extends Model
         'referrer_id',
         'matching',
     ];
-    
+
     protected $casts = [
         'matching' => 'decimal:9',
     ];

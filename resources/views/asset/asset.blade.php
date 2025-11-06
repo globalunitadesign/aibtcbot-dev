@@ -11,7 +11,7 @@
                     <p class="text-primary fs-4 m-0">{{ __('asset.total_asset') }}</p>
                     <h3 class="text-primary fs-6 mb-1">{{ $data['balance'] }}</h3>
                 </div>
-            </div>
+            </div>            
         </div>
         @if($list->isNotEmpty())
     <div class="table-responsive pb-5">
@@ -23,7 +23,7 @@
                     <th>{{ __('system.category') }}</th>
                 </tr>
             </thead>
-            <tbody id="loadMoreContainer">
+            <tbody id="loadMoreContainer">              
                 @foreach($list as $key => $val)
                 <tr>
                     <td>{{ date_format($val->created_at, 'Y-m-d') }}</td>
@@ -32,7 +32,7 @@
                 </tr>
                 @endforeach
             </tbody>
-        </table>
+        </table> 
         @if($has_more)
         <a href="{{ route('asset.list',['id' => $data['encrypted_id']]) }}" class="btn btn-outline-primary w-100 py-2 my-4 fs-4">{{ __('system.load_more') }}</a>
         @endif

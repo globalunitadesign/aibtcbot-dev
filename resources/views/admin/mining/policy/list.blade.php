@@ -16,7 +16,7 @@
                                 <th scope="col" class="ps-0 text-center">상품이름</th>
                                 <th scope="col" class="text-center">즉시 지급</th>
                                 <th scope="col" class="text-center">분할 지급</th>
-                                <th scope="col" class="text-center">기간</th>
+                                <th scope="col" class="text-center">분할 기간</th>
                                 <th scope="col" class="text-center">수정일자</th>
                             </tr>
                         </thead>
@@ -27,7 +27,7 @@
                                 <td class="text-center">{{ $val->mining_locale_name }}</td>
                                 <td class="text-center">{{ $val->instant_rate }}</td>
                                 <td class="text-center">{{ $val->split_rate }}</td>
-                                <td class="text-center">{{ $val->period }}일</td>
+                                <td class="text-center">{{ $val->split_period }}일</td>
                                 <td class="text-center">{{ $val['updated_at'] }}</td>
                             </tr>
                             @endforeach

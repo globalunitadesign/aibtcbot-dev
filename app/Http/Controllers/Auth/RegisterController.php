@@ -34,6 +34,11 @@ class RegisterController extends Controller
         return view('auth.register', compact('mid'));
     }
 
+    public function terms()
+    {
+        return view('auth.terms');
+    }
+
     /**
     * Register.
     *

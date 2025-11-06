@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Admin\Income;
 
 use App\Exports\Income\IncomeDepositExport;
 use App\Exports\Income\IncomeWithdrawalExport;
-use App\Exports\Income\IncomeTradingProfitExport;
-use App\Exports\Income\IncomeStakingRewardExport;
-use App\Exports\Income\IncomeSubscriptionBonusExport;
+use App\Exports\Income\IncomeMiningProfitExport;
 use App\Exports\Income\IncomeReferralBonusExport;
-use App\Models\UserProfile;
-use App\Models\Income;
+use App\Exports\Income\IncomeReferralMatchingExport;
+use App\Exports\Income\IncomeLevelBonusExport;
+use App\Exports\Income\IncomeLevelMatchingExport;
+use App\Exports\Income\IncomeRankBonusExport;
 use App\Models\IncomeTransfer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -76,8 +76,11 @@ class IncomeController extends Controller
 
         return match ($request->type) {
             'withdrawal' => view('admin.income.withdrawal-list', compact('list')),
+            'mining_profit' => view('admin.income.mining-profit-list', compact('list')),
             'referral_bonus' => view('admin.income.referral-list', compact('list')),
             'referral_matching' => view('admin.income.referral-matching-list', compact('list')),
+            'level_bonus' => view('admin.income.level-list', compact('list')),
+            'level_matching' => view('admin.income.level-matching-list', compact('list')),
             'rank_bonus' => view('admin.income.rank-list', compact('list')),
             default => view('admin.income.deposit-list', compact('list')),
         };
@@ -127,30 +130,35 @@ class IncomeController extends Controller
     {
         $current = now()->toDateString();
 
-        switch ($request->type) {
-            case 'deposit' :
-                return Excel::download(new IncomeDepositExport($request->all()), '회원 내부이체 내역 '.$current.'.xlsx');
-            break;
+        $exports = [
+            'deposit'           => IncomeDepositExport::class,
+            'withdrawal'        => IncomeWithdrawalExport::class,
+            'mining_profit'     => IncomeMiningProfitExport::class,
+            'referral_bonus'    => IncomeReferralBonusExport::class,
+            'referral_matching' => IncomeReferralMatchingExport::class,
+            'level_bonus'       => IncomeLevelBonusExport::class,
+            'level_matching'    => IncomeLevelMatchingExport::class,
+            'rank_bonus'        => IncomeRankBonusExport::class,
+        ];
 
-            case 'withdrawal' :
-                return Excel::download(new IncomeWithdrawalExport($request->all()), '회원 외부출금 내역 '.$current.'.xlsx');
-            break;
+        $file_names = [
+            'deposit'           => '수익 내부이체 내역',
+            'withdrawal'        => '수익 외부출금 내역',
+            'mining_profit'     => '수익 마이닝 수익 내역',
+            'referral_bonus'    => '수익 추천 보너스 내역',
+            'referral_matching' => '수익 추천 매칭 내역',
+            'level_bonus'       => '수익 레벨 보너스 내역',
+            'level_matching'    => '수익 레벨 매칭 내역',
+            'rank_bonus'        => '수익 승급 보너스 내역',
+        ];
 
-            case 'trading_profit' :
-                return Excel::download(new IncomeTradingProfitExport($request->all()), '회원 트레이딩 수익 내역 '.$current.'.xlsx');
-            break;
-
-            case 'staking_reward' :
-                return Excel::download(new IncomeStakingRewardExport($request->all()), '회원 스테이킹 수익 내역 '.$current.'.xlsx');
-            break;
-
-            case 'subscription_bonus' :
-                return Excel::download(new IncomeSubscriptionBonusExport($request->all()), '회원 DAO 인센티브 내역 '.$current.'.xlsx');
-            break;
-
-            case 'referral_bonus' :
-                return Excel::download(new IncomeReferralBonusExport($request->all()), '회원 추천 보너스 내역 '.$current.'.xlsx');
-            break;
+        if (!isset($exports[$request->type])) {
+            abort(400, '유효하지 않은 타입입니다.');
         }
+
+        $export_class = $exports[$request->type];
+        $file_name = $file_names[$request->type] . ' ' . $current . '.xlsx';
+
+        return Excel::download(new $export_class($request->all()), $file_name);
     }
 }

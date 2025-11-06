@@ -69,10 +69,10 @@
                         </thead>
                         <tbody class="table-group-divider">
                             <tr>
-                                <td class="text-center">0</td>
-                                <td class="text-center">0</td>
-                                <td class="text-center">0</td>
-                                <td class="text-center">0</td>
+                                <td class="text-center" id="totalNodeAmount">0</td>
+                                <td class="text-center" id="totalMiningAmount">0</td>
+                                <td class="text-center" id="totalLevelBonus">0</td>
+                                <td class="text-center" id="totalLevelMatching">0</td>
                             </tr>
                         </tbody>
                     </table>
@@ -83,32 +83,36 @@
                 </form>
             </div>
         </div>
-        @if($modify_logs->isNotEmpty())
+        @if($list)
             <div class="card">
                 <div class="card-body">
                     <div class="mb-3 d-flex justify-content-between">
-                        <h5 class="card-title">정책 변경 로그</h5>
+                        <h5 class="card-title">지급 내역</h5>
                     </div>
                     <hr>
                     <div class="table-responsive">
                         <table class="table text-nowrap align-middle mb-0 table-striped">
                             <thead>
                             <tr class="border-2 border-bottom border-primary border-0">
-                                <th scope="col" class="ps-0 text-center">변경 내용</th>
-                                <th scope="col" class="ps-0 text-center">변경 전</th>
-                                <th scope="col" class="ps-0 text-center">변경 후</th>
-                                <th scope="col" class="ps-0 text-center">관리자</th>
-                                <th scope="col" class="ps-0 text-center">수정일자</th>
+                                <th scope="col" class="ps-0 text-center">지급일</th>
+                                <th scope="col" class="ps-0 text-center">환율</th>
+                                <th scope="col" class="ps-0 text-center">1 노드 당 채굴값(1일)</th>
+                                <th scope="col" class="ps-0 text-center">노드 수량 합계</th>
+                                <th scope="col" class="ps-0 text-center">참여자 채굴량 합계</th>
+                                <th scope="col" class="ps-0 text-center">레벨 보너스 합계</th>
+                                <th scope="col" class="ps-0 text-center">레벨 매칭 합계</th>
                             </tr>
                             </thead>
                             <tbody class="table-group-divider">
-                            @foreach($modify_logs as $key => $val)
+                            @foreach($list as $key => $val)
                                 <tr>
-                                    <td class="text-center">{{ $val->column_description }}</td>
-                                    <td class="text-center">{{ $val->old_value }}</td>
-                                    <td class="text-center">{{ $val->new_value }}</td>
-                                    <td class="text-center">{{ $val->name }}</td>
-                                    <td class="text-center">{{ $val->created_at }}</td>
+                                    <td class="text-center">{{ $key }}</td>
+                                    <td class="text-center">{{ $val['exchange_rate'] }}</td>
+                                    <td class="text-center">{{ $val['node_amount'] }}</td>
+                                    <td class="text-center">{{ $val['total_node_amount'] }}</td>
+                                    <td class="text-center">{{ $val['total_mining_amount'] }}</td>
+                                    <td class="text-center">{{ $val['total_level_bonus'] }}</td>
+                                    <td class="text-center">{{ $val['total_level_matching'] }}</td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -120,6 +124,11 @@
         @endif
     </div>
 </div>
+<form method="POST" action="{{ route('admin.mining.policy.check') }}" id="miningCheckForm">
+    @csrf
+    <input type="hidden" name="id" value="{{ $view->id }}">
+    <input type="hidden" name="check_node_amount" value="">
+</form>
 @endsection
 @push('script')
 <script src="{{ asset('js/admin/mining/policy.js') }}"></script>

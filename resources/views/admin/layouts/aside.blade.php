@@ -4,7 +4,7 @@
         <div class="mt-5 mb-5">
             <div class="d-flex align-items-center justify-content-center mb-3">
                 <a href="{{ route('admin') }}" class="text-nowrap logo-img">
-                    <img src="{{ asset('images/logos/emblem.png') }}">
+                    <img src="{{ asset('images/logos/symbol.png') }}">
                 </a>
             </div>
             <p class="mb-3 text-center">어서오세요, <a href="{{ route('admin.manager.view', ['id' => auth()->guard('admin')->user()->id])}}">{{ Auth::guard('admin')->user()->name }}</a>님</p>
@@ -123,35 +123,13 @@
                     </a>
                 </li>
                 @endif
-                <li class="nav-small-cap">
-                    <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4" class="fs-6"></iconify-icon>
-                    <span class="hide-menu">게시판 관리</span>
-                </li>
-                @if (auth()->guard('admin')->user()->admin_level >= 3 )
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('admin.board.list') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-clipboard-list"></i>
-                        </span>
-                        <span class="hide-menu">게시판</span>
-                    </a>
-                </li>
-                @endif
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('admin.post.list', ['code' => 'notice']) }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-clipboard-text"></i>
-                        </span>
-                        <span class="hide-menu">게시글</span>
-                    </a>
-                </li>
                 @if (auth()->guard('admin')->user()->admin_level >= 3 )
                 <li class="nav-small-cap">
                     <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4" class="fs-6"></iconify-icon>
                     <span class="hide-menu">정책 관리</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('admin.user.policy') }}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('admin.user.policy', ['mode' => 'grade']) }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-user-off"></i>
                         </span>
@@ -167,11 +145,11 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('admin.income.policy', ['mode' => 'referral']) }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-gift-off"></i>
-                        </span>
-                        <span class="hide-menu">수익 정책</span>
+                    <a class="sidebar-link" href="{{ route('admin.marketing.list') }}" aria-expanded="false">
+                    <span>
+                        <i class="ti ti-shopping-cart-off"></i>
+                    </span>
+                        <span class="hide-menu">마케팅 정책</span>
                     </a>
                 </li>
                 {{--
@@ -201,6 +179,28 @@
                     </a>
                 </li>
                 @endif
+                <li class="nav-small-cap">
+                    <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4" class="fs-6"></iconify-icon>
+                    <span class="hide-menu">게시판 관리</span>
+                </li>
+                @if (auth()->guard('admin')->user()->admin_level >= 3 )
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('admin.board.list') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-clipboard-list"></i>
+                        </span>
+                            <span class="hide-menu">게시판</span>
+                        </a>
+                    </li>
+                @endif
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('admin.post.list', ['code' => 'notice']) }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-clipboard-text"></i>
+                        </span>
+                        <span class="hide-menu">게시글</span>
+                    </a>
+                </li>
                  <li class="nav-small-cap">
                     <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4" class="fs-6"></iconify-icon>
                     <span class="hide-menu">언어 관리</span>

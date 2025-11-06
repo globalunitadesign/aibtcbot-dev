@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Profile;
 
+use App\Models\Asset;
+use App\Models\Coin;
+use App\Models\Income;
 use App\Models\Mining;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -33,9 +36,35 @@ class DashboardController extends Controller
         $direct_count = isset($childrens[1]) ? $childrens[1]->count() : 0;
         $group_sales = $user->getGroupSales();
 
-        $mining = Mining::where('user_id', auth()->id())->get();
-        $total_node_amount = $mining->sum('node_amount');
-        $total_staking = $mining->sum('refund_coin_amount');
+        $minings = Mining::where('user_id', auth()->id())->get();
+        $coins = Coin::all();
+
+        $total_node_amount = $minings->sum('node_amount');
+        $total_staking = [];
+        $total_reward = [];
+
+        foreach ($coins as $coin) {
+            $total_staking[$coin->code] = 0;
+            $total_reward[$coin->code] = 0;
+        }
+
+        foreach ($minings as $mining) {
+            $refund = Asset::find($mining->refund_id);
+            $income = Income::find($mining->reward_id);
+            foreach ($coins as $coin) {
+                if ($refund->coin_id === $coin->id) {
+                    $total_staking[$coin->code] += $mining->refund_coin_amount;
+                }
+                if ($income->coin_id === $coin->id) {
+                    foreach ($mining->rewards as $reward) {
+                        $total_reward[$coin->code] += $reward->profits->sum('profit');
+                    }
+                }
+            }
+        }
+
+        $total_staking = array_filter($total_staking, fn($v) => $v != 0);
+        $total_reward = array_filter($total_reward, fn($v) => $v != 0);
 
         return [
             'grade' => $grade,
@@ -44,6 +73,7 @@ class DashboardController extends Controller
             'group_sales' => $group_sales,
             'total_node_amount' => $total_node_amount,
             'total_staking' => $total_staking,
+            'total_reward' => $total_reward,
         ];
     }
 }

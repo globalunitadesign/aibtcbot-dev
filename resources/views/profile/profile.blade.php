@@ -3,7 +3,7 @@
 @section('content')
 <main class="container-fluid py-5 mb-5">
     <div class="d-flex justify-content-between align-items-center">
-        <h3>{{ __('user.user_info') }}</h3>
+        <h3>{{ __('user.user_info') }}</h3>    
     </div>
     <form method="POST" action="{{ route('profile.update') }}" id="ajaxForm" class="mb-5">
         @csrf
@@ -34,7 +34,6 @@
                             <input type="text" name="phone" value="{{ $view->phone }}" class="form-control">
                         </td>
                     </tr>
-                    {{--
                     <tr>
                         <th class="text-center text-body align-middle">{{ __('user.kyc_verification') }}</th>
                         <td class="align-middle text-body">
@@ -45,18 +44,17 @@
                             @elseif ($view->user->kyc->status === 'rejected')
                             {{ __('auth.verified_failed') }} <a class="btn btn-info btn-sm px-4 m-0 ms-2" href="{{ route('kyc') }}">{{ __('auth.verify') }}</a>
                             <p class="m-0 mt-2 text-danger fw-semibold">{{ $view->user->kyc->memo }}</p>
-                            @else
+                            @else 
                             {{ __('auth.verified_success') }}
                             @endif
                         </td>
                     </tr>
-                    --}}
                     <tr>
                         <th class="text-center text-body align-middle">{{ __('user.otp_connect') }}</th>
                         <td class="align-middle text-body">
                             @if (!$view->user->otp || !$view->user->otp->secret_key)
                             {{ __('user.connect_unlinked') }}
-                            @else
+                            @else 
                             {{ __('user.connect_linked') }}
                             @endif
                         </td>
@@ -74,7 +72,7 @@
                         </td>
                     </tr>
                     <!--tr>
-                        <th class="text-center text-body align-middle">{{ __('messages.member.address') }}</th>
+                        <th class="text-center text-body align-middle">{{ __('messages.member.address') }}</th>           
                         <td>
                             <div class="d-flex mb-3 align-middle text-body">
                                 <div class="col-6 me-2">
