@@ -24,7 +24,8 @@ class UserController extends Controller
     {
         $list = DB::table('users')
         ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
-        ->join('member_grades', 'user_profiles.grade_id', '=', 'member_grades.id')
+        ->join('members', 'users.id', '=', 'members.user_id')
+        ->join('member_grades', 'members.grade_id', '=', 'member_grades.id')
         ->select('user_profiles.*', 'users.name', 'users.account', 'member_grades.name as grade_name')
         ->when(request('keyword') != '', function ($query) {
             if(request('category') == 'mid'){

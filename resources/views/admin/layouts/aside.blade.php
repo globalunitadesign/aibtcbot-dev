@@ -41,6 +41,7 @@
                     </a>
                 </li>
                 @endif
+                {{--
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('chart.ref', ['admin' => 1]) }}" aria-expanded="false">
                         <span>
@@ -49,6 +50,7 @@
                         <span class="hide-menu">추천 조직도</span>
                     </a>
                 </li>
+                --}}
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('chart.aff', ['admin' => 1]) }}" aria-expanded="false">
                         <span>

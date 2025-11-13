@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\Admin\User;
 
-use App\Models\User;
-use App\Models\UserGrade;
+use App\Models\MemberGrade;
 use App\Models\GradePolicy;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -17,16 +16,16 @@ class GradeController extends Controller
 
     public function index(Request $request)
     {
-        
-        $list = UserGrade::paginate(10);
+
+        $list = MemberGrade::paginate(10);
 
         return view('admin.user.grade', compact('list'));
-       
+
     }
 
     public function store(Request $request)
     {
-         
+
         $validated = $request->validate([
             'name' => 'required|string|max:50',
             'level' => 'required|integer|min:1',
@@ -37,25 +36,25 @@ class GradeController extends Controller
 
         try {
 
-            $grade = UserGrade::create($validated);
+            $grade = MemberGrade::create($validated);
 
             GradePolicy::create([
                 'grade_id' => $grade->id,
             ]);
 
-            DB::commit(); 
+            DB::commit();
 
             return response()->json([
                 'status' => 'success',
                 'message' => '등급이 추가되었습니다.',
                 'url' => route('admin.user.grade'),
             ]);
-            
+
 
         } catch (\Exception $e) {
 
             DB::rollBack();
-            
+
             \Log::error('Failed to insert coin', ['error' => $e->getMessage()]);
 
             return response()->json([
@@ -65,19 +64,19 @@ class GradeController extends Controller
         }
 
     }
-    
 
-    public function delete(Request $request) 
+
+    public function delete(Request $request)
     {
 
         DB::beginTransaction();
 
         try {
-            
-            $grade = UserGrade::findOrFail($request->id);
+
+            $grade = MemberGrade::findOrFail($request->id);
 
             $policy = GradePolicy::where('grade_id', $grade->id)->first();
-            
+
             if ($policy) {
                 $policy->delete();
             }
@@ -94,7 +93,7 @@ class GradeController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             \Log::error('Failed to delete user grade', ['error' => $e->getMessage()]);
 
             return response()->json([
@@ -103,4 +102,4 @@ class GradeController extends Controller
             ]);
         }
     }
-}   
+}
