@@ -5,13 +5,13 @@
     <div class="pb-3 mb-4">
         <div class="d-flex justify-content-start align-items-center">
             <p class="mb-2 pe-3 fs-4">
-                {{ __('user.level') }}<span class="fw-semibold d-inline-block ps-2">{{ Auth::user()->profile->grade->name }}</span>
+                {{ __('user.level') }}<span class="fw-semibold d-inline-block ps-2">{{ Auth::user()->member->grade->name }}</span>
             </p>
             <p class="mb-2 divider ps-3 position-relative fs-4">
-                UID<span class="fw-semibold d-inline-block ps-2">{{ Auth::user()->id }}</span>
+                UID<span class="fw-semibold d-inline-block ps-2">U{{ Auth::user()->id }}</span>
             </p>
             <a href="#">
-                <p type="button" class="mb-2 fs-4 ps-2 copyBtn" data-copy="{{ Auth::user()->id }}">{{ __('system.copy') }}</p>
+                <p type="button" class="mb-2 fs-4 ps-2 copyBtn" data-copy="U{{ Auth::user()->id }}">{{ __('system.copy') }}</p>
             </a>
         </div>
         <div class="d-flex justify-content-between align-items-center w-100">
@@ -82,12 +82,17 @@
         <div class="card-body py-4 px-0">
             <nav>
                 <div class="nav justify-content-center" id="nav-tab" role="tablist">
-                    <button class="nav-link nav-asset active ps-0 pe-3" id="nav-asset-tab" data-bs-toggle="tab" data-bs-target="#nav-asset" type="button" role="tab" aria-controls="nav-asset" aria-selected="true">
+                    <button class="nav-link nav-asset active ps-3 pe-3" id="nav-asset-tab" data-bs-toggle="tab" data-bs-target="#nav-asset" type="button" role="tab" aria-controls="nav-asset" aria-selected="true">
                         <h5 class="link-card-tab fs-6 my-3">{{ __('asset.assets_held') }}</h5>
                     </button>
-                    <button class="nav-link nav-wallet ps-3 pe-0 position-relative divider-w" id="nav-wallet-tab" data-bs-toggle="tab" data-bs-target="#nav-wallet" type="button" role="tab" aria-controls="nav-wallet" aria-selected="false">
+                    <button class="nav-link nav-wallet ps-3 pe-3 position-relative divider-w" id="nav-wallet-tab" data-bs-toggle="tab" data-bs-target="#nav-wallet" type="button" role="tab" aria-controls="nav-wallet" aria-selected="false">
                         <h5 class="link-card-tab fs-6 my-3">{{ __('asset.income_wallet') }}</h5>
                     </button>
+                    @if($avatar_data->isNotEmpty())
+                    <button class="nav-link nav-wallet ps-3 pe-3 position-relative divider-w" id="nav-avatar-tab" data-bs-toggle="tab" data-bs-target="#nav-avatar" type="button" role="tab" aria-controls="nav-avatar" aria-selected="false">
+                        <h5 class="link-card-tab fs-6 my-3">{{ __('user.avatar') }}</h5>
+                    </button>
+                    @endif
                 </div>
             </nav>
             <div class="tab-content" id="nav-tabContent">
@@ -160,6 +165,44 @@
                     @endif
                 </div>
             </div>
+            @if($avatar_data->isNotEmpty())
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade" id="nav-avatar" role="tabpanel" aria-labelledby="nav-avatar-tab" tabindex="0">
+                    <div>
+                        @php
+                            $firstTwo = $avatar_data->take(2);
+                            $remaining = $avatar_data->slice(2);
+                        @endphp
+                        @foreach($firstTwo as $income)
+                            <div class="d-flex justify-content-between align-items-center pt-4 px-4">
+                                <h6 class="text-white fs-4 fw-normal lh-md m-0">{{ $income['code'] }}</h6>
+                                <h4 class="fw-bold text-white fs-6 fs-md-6 text-end flex-grow-1 m-0 px-1">{{ number_format(floor( $income['balance'] * 10000) / 10000, 4) }}</h4>
+                                <a href="{{ route('income.avatar', ['id' => $income['id'] ]) }}">
+                                    <span class="btn btn-outline-light btn-sm py-1 px-3 ms-2">{{ __('system.detail') }}</span>
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                    @if($remaining->isNotEmpty())
+                        <div class="collapse-box">
+                            <div class="collapse" id="collapseBox">
+                                @foreach($remaining as $income)
+                                    <div class="d-flex justify-content-between align-items-center pt-4 px-4">
+                                        <h6 class="text-white fs-4 fw-normal lh-md m-0">{{ $income['code'] }}</h6>
+                                        <a href="{{ route('income', ['id' => $income['id'], 'type' => 'avatar' ]) }}">
+                                            <h4 class="fw-bold text-white fs-6 fs-md-6 m-0">{{ number_format(floor( $income['balance'] * 10000) / 10000, 4) }}<span class="btn btn-outline-light btn-sm py-1 px-3 mb-1 ms-2">{{ __('system.detail') }}</span></h4>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <a class="d-block mt-4 mb-2 opacity-75 text-white" style="height: 24px;" data-bs-toggle="collapse" href="#collapseBox" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                <span class="fs-4 mb-4"></span>
+                            </a>
+                        </div>
+                    @endif
+                </div>
+            </div>
+            @endif
         </div>
     </div>
     <div class="mb-5">

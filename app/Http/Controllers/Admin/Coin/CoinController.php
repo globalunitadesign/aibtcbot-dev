@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin\Coin;
 
 
 use App\Models\Coin;
-use App\Models\User;
+use App\Models\Member;
 use App\Models\Asset;
 use App\Models\Income;
 use App\Http\Controllers\Controller;
@@ -66,17 +66,17 @@ class CoinController extends Controller
 
                 $coin = Coin::create($data);
 
-                $users = User::all();
+                $members = Member::all();
 
-                foreach ($users as $user) {
+                foreach ($members as $member) {
                     Asset::create([
-                        'user_id' => $user->id,
+                        'member_id' => $member->id,
                         'coin_id' => $coin->id,
                         'balance' => 0,
                     ]);
 
                     Income::create([
-                        'user_id' => $user->id,
+                        'member_id' => $member->id,
                         'coin_id' => $coin->id,
                         'balance' => 0,
                     ]);

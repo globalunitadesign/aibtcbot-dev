@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class UserGrade extends Model
+class MemberGrade extends Model
 {
     use HasFactory;
 

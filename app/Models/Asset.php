@@ -15,7 +15,7 @@ class Asset extends Model
     use HasFactory, TruncatesDecimals;
 
     protected $fillable = [
-        'user_id',
+        'member_id',
         'coin_id',
         'balance',
     ];
@@ -30,9 +30,9 @@ class Asset extends Model
         'tax_rate',
     ];
 
-    public function user()
+    public function member()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(Member::class, 'member_id', 'id');
     }
 
     public function coin()
@@ -96,33 +96,30 @@ class Asset extends Model
         $today = Carbon::today();
         $tomorrow = Carbon::tomorrow();
 
-        $user_profile = UserProfile::where('user_id', $this->user_id)->first();
+        $member = Member::find($this->member->id);
 
         $direct_count = 0;
-        $childrens = $user_profile->getChildrenTree(21);
+        $children_tree = $member->getChildrenTree(21);
 
-        if ($childrens) {
-            $direct_count = count($childrens[1]);
+        if ($children_tree) {
+            $direct_count = count($children_tree[1]);
         }
 
         $referral_count = 0;
         $group_sales = 0;
         $group_sales_expected = 0;
 
-        foreach ($childrens as $level => $profiles) {
-            foreach ($profiles as $profile) {
-                $user = $profile->user;
-                if(!$user) continue;
-
+        foreach ($children_tree as $level => $children) {
+            foreach ($children as $child) {
                 $referral_count++;
 
-                $group_sales += AssetTransfer::where('user_id', $user->id)
+                $group_sales += AssetTransfer::where('member_id', $child->id)
                     ->whereIn('type', ['deposit', 'internal', 'manual_deposit'])
                     ->where('status', 'completed')
                     ->get()
                     ->sum(fn($deposit) => (float) $deposit->getAmountInUsdt());
 
-                $group_sales_expected += AssetTransfer::where('user_id', $user->id)
+                $group_sales_expected += AssetTransfer::where('member_id', $child->id)
                     ->whereIn('type', ['deposit', 'internal'])
                     ->where('status', 'waiting')
                     ->get()
@@ -130,7 +127,7 @@ class Asset extends Model
             }
         }
 
-        $income = Income::where('user_id', $this->user_id)
+        $income = Income::where('member_id', $this->member->id)
                 ->where('coin_id', $this->coin_id)
                 ->first();
 
@@ -163,7 +160,7 @@ class Asset extends Model
             'encrypted_id' => $this->encrypted_id,
             'coin_name' => $this->coin->name,
             'balance' => $this->balance,
-            'grade' => $user_profile->grade->name,
+            'grade' => $member->grade->name,
             'profit' => [
                 'today' => $profit_today,
                 'yesterday' => $profit_yesterday,

@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Mail\EmailVerificationCode;
+use App\Services\MemberService;
+use App\Models\Avatar;
 use App\Models\User;
 use App\Models\UserProfile;
 use App\Models\UserOtp;
-use App\Models\Coin;
-use App\Models\Asset;
-use App\Models\Income;
+use App\Models\Member;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -72,6 +72,8 @@ class RegisterController extends Controller
 
         } catch (\Exception $e) {
 
+            Log::channel('user')->error('Failed to join', ['message' => $e->getMessage()]);
+
             return response()->json([
                 'status' => 'error',
                 'message' => __('auth.register_failed_notice'),
@@ -133,10 +135,16 @@ class RegisterController extends Controller
 
     }
 
-    public function parentCheck(Request $request)
+    public function referrerCheck(Request $request)
     {
+        $service = new MemberService();
+        $referrer_info  = $service->memberParseCode($request->referrerId);
 
-        $exists = User::where('id', $request->parentId)->exists();
+        if ($referrer_info['type'] === 'avatar') {
+            $exists = Avatar::where('id', $referrer_info['id'])->exists();
+        } else {
+            $exists = User::where('id', $referrer_info['id'])->exists();
+        }
 
         return response()->json([
             'status' => $exists ? 'success' : 'error',
@@ -159,7 +167,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255'],
             'code' => ['required', 'string'],
             'phone' => ['required', 'string', 'min:9', 'max:12', 'regex:/^[\d+]+$/'],
-            'parentId' => ['required', 'integer'],
+            'referrerId' => ['required', 'string'],
             'metaUid' => ['nullable', 'string', 'max:50', 'regex:/^[a-zA-Z0-9]+$/'],
         ]);
     }
@@ -176,14 +184,16 @@ class RegisterController extends Controller
         DB::beginTransaction();
 
         try {
+            $service = new MemberService();
+            $referrer_info = $service->memberParseCode($data['referrerId']);
 
-            $parent = DB::table('users')
-            ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
-            ->select('users.id', 'user_profiles.level')
-            ->where('users.id', '=', $data['parentId'])
-            ->first();
+            if ($referrer_info['type'] === 'avatar') {
+                $referrer = Member::where('avatar_id', $referrer_info['id'])->first();
+            } else {
+                $referrer = Member::where('user_id', $referrer_info['id'])->first();
+            }
 
-            if (!$parent) {
+            if (!$referrer) {
                 throw new Exception('존재하지 않는 추천인 UID입니다.');
             }
 
@@ -193,10 +203,8 @@ class RegisterController extends Controller
                 'password' => Hash::make($data['password'])
             ]);
 
-            $user_profile = UserProfile::create([
+            UserProfile::create([
                 'user_id' => $user->id,
-                'parent_id' => $parent->id,
-                'level' => $parent->level + 1,
                 'email' => $data['email'],
                 'phone' => $data['phone'],
                 'meta_uid' => $data['metaUid'],
@@ -206,19 +214,7 @@ class RegisterController extends Controller
                 'user_id' => $user->id,
             ]);
 
-            $coins = Coin::pluck('id');
-
-            foreach($coins as $id) {
-                Asset::create([
-                    'user_id' => $user->id,
-                    'coin_id' => $id,
-                ]);
-
-                Income::create([
-                    'user_id' => $user->id,
-                    'coin_id' => $id,
-                ]);
-            }
+            $service->addMember($user->id,'user', $referrer->id);
 
             DB::commit();
 
@@ -233,5 +229,4 @@ class RegisterController extends Controller
             throw new Exception('회원가입에 실패하였습니다. 다시 시도해주세요.' . $e->getMessage());
         }
     }
-
 }

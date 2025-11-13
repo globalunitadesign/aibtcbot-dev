@@ -17,20 +17,22 @@ class WithdrawalController extends Controller
 {
     public function __construct()
     {
-        
+
     }
-    
+
     public function index()
     {
-        $assets = Asset::where('user_id', auth()->id())
+        $user = auth()->user();
+
+        $assets = Asset::where('member_id', $user->member->id)
         ->whereHas('coin', function ($query) {
             $query->where('is_active', 'y');
             $query->where('is_asset', 'y');
         })
         ->get();
-     
+
         return view('asset.withdrawal', compact('assets'));
-    } 
+    }
 
     public function store(Request $request)
     {
@@ -44,15 +46,14 @@ class WithdrawalController extends Controller
         DB::beginTransaction();
 
         try {
+            $user = auth()->user();
             $asset_policy = AssetPolicy::first();
 
             if (!$asset_policy->isWithdrawalAvailableToday()) {
                 throw new \Exception(__('asset.withdrawal_disabled_day_notice'));
             }
 
-            $user = UserProfile::where('user_id', auth()->id())->first();
-
-            if ($user->is_frozen === 'y') {
+            if ($user->profile->is_frozen === 'y') {
                 throw new \Exception(__('asset.withdrawal_frozen_account_notice'));
             }
 
@@ -67,21 +68,21 @@ class WithdrawalController extends Controller
             }
 
             $asset = Asset::findOrFail($asset_id[0]);
-            
+
             if ($asset->balance < $validated['amount']) {
                 throw new \Exception(__('asset.lack_balance_notice'));
             }
 
             $amount = $validated['amount'];
-            
+
             $tax = $validated['tax'] ?? 0;
             $fee = 0;
             //$fee = $validated['fee'] ?? 0;
-            //$actual_amount = $amount - $tax - $fee; 
-            $actual_amount = $amount - $tax; 
+            //$actual_amount = $amount - $tax - $fee;
+            $actual_amount = $amount - $tax;
 
             $assetTransfer = AssetTransfer::create([
-                'user_id' => auth()->id(),
+                'member_id' => $user->member->id,
                 'asset_id' => $asset->id,
                 'type' => 'withdrawal',
                 'amount' => $amount,
@@ -91,17 +92,17 @@ class WithdrawalController extends Controller
                 'before_balance' => $asset->balance,
                 'after_balance' => $asset->balance - $amount,
             ]);
-            
+
             $asset->decrement('balance', $amount);
 
             DB::commit();
-        
+
             return response()->json([
                 'status' => 'success',
                 'message' =>  __('asset.withdrawal_apply_notice'),
                 'url' => route('asset.withdrawal.complete', ['id' => $assetTransfer->id]),
             ]);
-        
+
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -115,7 +116,7 @@ class WithdrawalController extends Controller
     public function complete($id)
     {
         $assetTransfer = AssetTransfer::find($id);
-        
+
         $amount = $assetTransfer->amount;
 
         return view('asset.withdrawal-complete', compact('amount'));
@@ -123,15 +124,16 @@ class WithdrawalController extends Controller
 
     public function list()
     {
+        $user = auth()->user();
         $limit = 10;
 
-        $list = AssetTransfer::where('user_id', Auth()->id())
+        $list = AssetTransfer::where('member_id', $user->member->id)
             ->where('type', 'withdrawal')
             ->latest()
             ->take($limit)
             ->get();
 
-        $total_count = AssetTransfer::where('user_id', auth()->id())
+        $total_count = AssetTransfer::where('member_id', $user->member->id)
             ->where('type', 'withdrawal')
             ->count();
 
@@ -142,18 +144,20 @@ class WithdrawalController extends Controller
 
     public function loadMore(Request $request)
     {
+        $user = auth()->user();
+
         $offset = $request->input('offset', 0);
         $limit = $request->input('limit', 10);
 
         $query = AssetTransfer::with('asset.coin')
-            ->where('user_id', auth()->id())
+            ->where('member_id', $user->member->id)
             ->where('type', 'withdrawal')
             ->orderByDesc('id');
 
         $items = $query->skip($offset)->take($limit + 1)->get();
 
         $hasMore = $items->count() > $limit;
-        
+
         $items = $items->take($limit)->map(function ($item) {
             return [
                 'created_at' => $item->created_at->format('Y-m-d'),

@@ -10,12 +10,12 @@ use Illuminate\Http\Request;
 
 class AffChartController extends Controller
 {
- 
+
     public function __construct()
     {
-        
+
     }
-   
+
     public function index(Request $request)
     {
         $chart = new Chart();
@@ -23,17 +23,18 @@ class AffChartController extends Controller
 
         if($request->admin){
             $chart->is_admin = 1;
-            $user_id = 1000011;
+            $member_id = 1;
         } else {
-            $user_id = Auth::user()->id;
+            $user = auth()->user();
+            $member_id = $user->member->id;
         }
-        
-        $user_id = $request->search ? $request->search : $user_id;
-        
-        $chart->getChartData($user_id);
-       
+
+        $member_id = $request->search ? $request->search : $member_id;
+
+        $chart->getChartData($member_id);
+
         return view('chart.chart', ['chartData' => $chart->data]);
-      
+
     }
 
 }

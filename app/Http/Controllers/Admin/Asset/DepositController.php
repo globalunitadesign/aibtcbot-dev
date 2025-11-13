@@ -49,7 +49,7 @@ class DepositController extends Controller
             ]);
 
             $deposit = AssetTransfer::create([
-                'user_id' => $asset->user_id,
+                'member_id' => $asset->member_id,
                 'asset_id' => $asset->id,
                 'type' => 'manual_deposit',
                 'status' => 'completed',
@@ -61,10 +61,10 @@ class DepositController extends Controller
 
             DB::commit();
 
-            $user = User::find($deposit->user_id);
+            $user = User::find($deposit->member->user_id);
 
-            $user->profile->checkUserValidity();
-            $user->profile->checkUserGrade();
+            $user->member->checkUserValidity();
+            $user->member->checkMemberGrade();
 
             return response()->json([
                 'status' => 'success',

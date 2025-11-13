@@ -91,7 +91,7 @@ class SubscriptionPolicy extends Model
 
     public function grade()
     {
-        return $this->belongsTo(UserGrade::class, 'grade_id', 'id');
+        return $this->belongsTo(MembereGrade::class, 'grade_id', 'id');
     }
 
 

@@ -39,24 +39,14 @@ class User extends Authenticatable
         return $this->hasOne(UserProfile::class, 'user_id', 'id');
     }
 
-    public function assets()
+    public function member()
     {
-        return $this->hasMany(Asset::class, 'user_id', 'id');
+        return $this->hasOne(Member::class, 'user_id', 'id');
     }
 
-    public function assetTransfers()
+    public function avatars()
     {
-        return $this->hasMany(AssetTransfer::class, 'user_id', 'id');
-    }
-
-    public function incomes()
-    {
-        return $this->hasMany(Income::class, 'user_id', 'id');
-    }
-
-    public function incomeTransfers()
-    {
-        return $this->hasMany(IncomeTransfer::class, 'user_id', 'id');
+        return $this->hasMany(Avatar::class, 'owner_id', 'id');
     }
 
     public function posts()
@@ -73,5 +63,4 @@ class User extends Authenticatable
     {
         return $this->hasOne(KycVerification::class, 'user_id', 'id');
     }
-
 }

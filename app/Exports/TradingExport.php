@@ -14,18 +14,18 @@ class TradingExport implements FromCollection, WithHeadings
     {
         $this->filters = $filters;
     }
-  
+
     public function collection()
     {
-        
+
         $query = DB::table('tradings')
             ->leftJoin('trading_profits', 'tradings.id', '=', 'trading_profits.trading_id')
             ->leftJoin('users', 'tradings.user_id', '=', 'users.id')
             ->leftJoin('user_profiles', 'tradings.user_id', '=', 'user_profiles.user_id')
-            ->leftJoin('user_grades', 'user_profiles.grade_id', '=', 'user_grades.id')
+            ->leftJoin('member_grades', 'user_profiles.grade_id', '=', 'member_grades.id')
             ->leftJoin('coins', 'tradings.coin_id', '=', 'coins.id')
             ->select(
-                'user_grades.name as grade_name',
+                'member_grades.name as grade_name',
                 'users.id',
                 'users.name',
                 'coins.name as coin_name',
@@ -36,7 +36,7 @@ class TradingExport implements FromCollection, WithHeadings
                 'tradings.created_at',
             )
             ->groupBy(
-                'user_grades.name',
+                'member_grades.name',
                 'users.id',
                 'users.name',
                 'coins.name',
@@ -46,7 +46,7 @@ class TradingExport implements FromCollection, WithHeadings
                 'tradings.created_at'
             );
 
-      
+
         if (!empty($this->filters['keyword']) && $this->filters['category'] == 'mid') {
             $query->where('users.id', $this->filters['keyword']);
         }
@@ -64,7 +64,7 @@ class TradingExport implements FromCollection, WithHeadings
         return $query->get();
     }
 
-  
+
     public function headings(): array
     {
         return ['등급', 'MID', '회원명', '자산종류', '퀀트횟수', '보유자산', '수익', '수익률', '가입일자'];

@@ -110,19 +110,19 @@ $(document).ready(function() {
         }
     });
 
-    $('#inputParentId').focusout(function() {
+    $('#inputReferrerId').focusout(function() {
         let self = this;
-        const parentId = $(self).val();
+        const referrerId = $(self).val();
 
-        $('#inputParentCheck').val(parentId);
+        $('#inputReferrerCheck').val(referrerId);
 
-        const parentCheckForm = $('#parentCheckForm')[0];
-        const parentCheckFormData = new FormData(parentCheckForm);
+        const referrerCheckForm = $('#referrerCheckForm')[0];
+        const referrerCheckFormData = new FormData(referrerCheckForm);
 
         $.ajax({
-            url: $(parentCheckForm).attr('action'),
+            url: $(referrerCheckForm).attr('action'),
             type: 'POST',
-            data: parentCheckFormData,
+            data: referrerCheckFormData,
             processData: false,
             contentType: false,
             success: function(response) {

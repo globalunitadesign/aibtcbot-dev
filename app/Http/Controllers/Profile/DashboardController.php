@@ -27,14 +27,15 @@ class DashboardController extends Controller
     private function getDashboardData()
     {
 
-        $user = auth()->user()->profile;
-        $grade = $user->grade->name;
+        $user = auth()->user();
+        $grade = $user->member->grade->name;
 
-        $childrens = $user->getChildrenTree(20);
+        $childrens = $user->member->getChildrenTree(20);
+        $avatars = $user->avatars;
 
         $all_count = collect($childrens)->flatten(1)->count();
         $direct_count = isset($childrens[1]) ? $childrens[1]->count() : 0;
-        $group_sales = $user->getGroupSales();
+        $group_sales = $user->member->getGroupSales();
 
         $minings = Mining::where('user_id', auth()->id())->get();
         $coins = Coin::all();
@@ -74,6 +75,7 @@ class DashboardController extends Controller
             'total_node_amount' => $total_node_amount,
             'total_staking' => $total_staking,
             'total_reward' => $total_reward,
+            'avatars' => $avatars,
         ];
     }
 }

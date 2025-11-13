@@ -11,7 +11,7 @@ class ReferralBonus extends Model
     use HasFactory, TruncatesDecimals;
 
     protected $fillable = [
-        'user_id',
+        'member_id',
         'mining_id',
         'transfer_id',
         'referrer_id',
@@ -22,9 +22,9 @@ class ReferralBonus extends Model
         'bonus' => 'decimal:9',
     ];
 
-    public function user()
+    public function member()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(Member::class, 'member_id', 'id');
     }
 
     public function mining()

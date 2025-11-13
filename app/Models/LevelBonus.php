@@ -11,7 +11,7 @@ class LevelBonus extends Model
     use HasFactory, TruncatesDecimals;
 
     protected $fillable = [
-        'user_id',
+        'member_id',
         'referrer_id',
         'transfer_id',
         'profit_id',
@@ -22,9 +22,9 @@ class LevelBonus extends Model
         'bonus' => 'decimal:9',
     ];
 
-    public function user()
+    public function member()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(Member::class, 'member_id', 'id');
     }
 
     public function profit()

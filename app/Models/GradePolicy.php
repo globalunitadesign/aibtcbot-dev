@@ -16,7 +16,7 @@ class GradePolicy extends Model
         'self_sales',
         'group_sales',
     ];
-    
+
     protected $casts = [
         'self_sales' => 'decimal:9',
         'group_sales' => 'decimal:9',
@@ -36,7 +36,7 @@ class GradePolicy extends Model
 
     public function grade()
     {
-        return $this->belongsTo(UserGrade::class, 'grade_id', 'id');
+        return $this->belongsTo(MemberGrade::class, 'grade_id', 'id');
     }
 
 

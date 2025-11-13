@@ -6,7 +6,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="card-title">회원 정보</h5>    
+                    <h5 class="card-title">회원 정보</h5>
                     <div>{{ $view->created_at }}</div>
                 </div>
                 <form method="POST" action="{{ route('admin.user.update') }}" id="ajaxForm" >
@@ -56,7 +56,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="text-center align-middle">주소</th>           
+                                <th class="text-center align-middle">주소</th>
                                 <td colspan=3>
                                     <div class="d-flex mb-3 align-middle">
                                         <div class="col-4 me-2">
@@ -116,11 +116,10 @@
                 </form>
             </div>
         </div>
-
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="card-title">자산 정보</h5>    
+                    <h5 class="card-title">자산 정보</h5>
                 </div>
                 <hr>
                 <table class="table table-bordered mt-5 mb-5">
@@ -128,7 +127,7 @@
                         <tr>
                             <th class="text-center align-middle">자산<br>수량</th>
                             <td class="align-middle">
-                                @foreach($view->assets as $asset)
+                                @foreach($view->member->assets as $asset)
                                 <div class="row align-items-center mb-3">
                                     <div class="col-3 text-end">
                                         <label class="form-label mb-0">{{ $asset->coin->name }} :</label>
@@ -141,7 +140,7 @@
                             </td>
                             <th class="text-center align-middle">수익<br>지갑</th>
                             <td class="align-middle">
-                                @foreach($view->incomes as $income)
+                                @foreach($view->member->incomes as $income)
                                 <div class="row align-items-center mb-3">
                                     <div class="col-3 text-end">
                                         <label class="form-label mb-0">{{ $income->coin->name }} :</label>
@@ -157,12 +156,46 @@
                 </table>
                 <hr>
                 @if (auth()->guard('admin')->user()->admin_level >= 3 )
-                <div class="d-flex justify-content-end align-items-center">    
+                <div class="d-flex justify-content-end align-items-center">
                     <a href="{{ route('admin.asset.deposit', ['id' => $view->id]) }}" class="btn btn-info">수동입금</a>
-                </div>    
+                </div>
                 @endif
             </div>
-        </div>    
+        </div>
+        @if($view->avatars->isNotEmpty())
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">아바타 정보</h5>
+                </div>
+                <hr>
+                <div class="table-responsive">
+                    <table class="table text-nowrap align-middle mb-0 table-striped table-hover">
+                        <thead>
+                            <tr class="border-2 border-bottom border-primary border-0">
+                                <th scope="col" class="ps-0 text-center">번호</th>
+                                @foreach($view->member->incomes as $income)
+                                <th scope="col" class="text-center">{{ $income->coin->name }}</th>
+                                @endforeach
+                                <th scope="col" class="text-center" >생성일자</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            @foreach($view->avatars as $avatar)
+                            <tr>
+                                <td class="text-center">{{ $avatar->name }}</td>
+                                @foreach($avatar->member->incomes as $income)
+                                <td class="text-center">{{ $income->balance }}</td>
+                                @endforeach
+                                <td class="text-center">{{ $avatar->created_at }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 <form method="POST" action="{{ route('admin.user.reset') }}" id="resetForm">

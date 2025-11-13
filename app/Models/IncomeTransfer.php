@@ -14,7 +14,7 @@ class IncomeTransfer extends Model
     use HasFactory, TruncatesDecimals;
 
     protected $fillable = [
-        'user_id',
+        'member_id',
         'income_id',
         'type',
         'status',
@@ -42,9 +42,9 @@ class IncomeTransfer extends Model
         'waiting_period',
     ];
 
-    public function user()
+    public function member()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(Member::class, 'member_id', 'id');
     }
 
     public function income()
@@ -174,7 +174,7 @@ class IncomeTransfer extends Model
 
             try {
                 $income = Income::find($deposit->income_id);
-                $asset = Asset::where('user_id', $deposit->user_id)
+                $asset = Asset::where('member_id', $deposit->member_id)
                     ->where('coin_id', $deposit->income->coin_id)
                     ->first();
 
@@ -186,7 +186,7 @@ class IncomeTransfer extends Model
                 $deposit->update(['status' => 'completed']);
 
                 AssetTransfer::create([
-                    'user_id' => $deposit->user_id,
+                    'member_id' => $deposit->member_id,
                     'asset_id' => $asset->id,
                     'type' => 'internal',
                     'status' => 'completed',
@@ -197,7 +197,7 @@ class IncomeTransfer extends Model
                 ]);
 
                 Log::channel('asset')->info('Deposited amount reflected to user income balance', [
-                    'user_id' => $asset->user_id,
+                    'member_id' => $asset->member_id,
                     'transfer_id' => $deposit->id,
                     'balance' => $amount,
                     'before_balance' => $before_balance,

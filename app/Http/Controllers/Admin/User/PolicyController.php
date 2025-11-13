@@ -7,7 +7,7 @@ use App\Models\GradePolicy;
 use App\Models\PolicyModifyLog;
 use App\Http\Controllers\Controller;
 use App\Models\RankPolicy;
-use App\Models\UserGrade;
+use App\Models\MemberGrade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -22,26 +22,26 @@ class PolicyController extends Controller
             case 'rank' :
 
                 $policies = RankPolicy::all();
-                $user_grades = UserGrade::all();
+                $member_grades = MemberGrade::all();
 
                 $modify_logs = PolicyModifyLog::join('rank_policies', 'rank_policies.id', '=', 'policy_modify_logs.policy_id')
-                    ->join('user_grades', 'user_grades.id', '=', 'rank_policies.grade_id')
+                    ->join('member_grades', 'member_grades.id', '=', 'rank_policies.grade_id')
                     ->join('admins', 'admins.id', '=', 'policy_modify_logs.admin_id')
-                    ->select('user_grades.name as grade_name', 'admins.name', 'policy_modify_logs.*')
+                    ->select('member_grades.name as grade_name', 'admins.name', 'policy_modify_logs.*')
                     ->where('policy_modify_logs.policy_type', 'rank_policies')
                     ->orderBy('policy_modify_logs.created_at', 'desc')
                     ->get();
 
-                return view('admin.user.policy.rank', compact('policies', 'user_grades', 'modify_logs'));
+                return view('admin.user.policy.rank', compact('policies', 'member_grades', 'modify_logs'));
 
             default :
 
                 $policies = GradePolicy::all();
 
                 $modify_logs = PolicyModifyLog::join('grade_policies', 'grade_policies.id', '=', 'policy_modify_logs.policy_id')
-                    ->join('user_grades', 'user_grades.id', '=', 'grade_policies.grade_id')
+                    ->join('member_grades', 'member_grades.id', '=', 'grade_policies.grade_id')
                     ->join('admins', 'admins.id', '=', 'policy_modify_logs.admin_id')
-                    ->select('user_grades.name as grade_name', 'admins.name', 'policy_modify_logs.*')
+                    ->select('member_grades.name as grade_name', 'admins.name', 'policy_modify_logs.*')
                     ->where('policy_modify_logs.policy_type', 'grade_policies')
                     ->orderBy('policy_modify_logs.created_at', 'desc')
                     ->get();

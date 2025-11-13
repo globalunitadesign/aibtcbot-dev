@@ -115,7 +115,7 @@
                             <th class="text-center align-middle">레벨</th>
                             <td class="align-middle">
                                 <select name="grade_id" class="form-select w-75">
-                                    @foreach($user_grades as $grade)
+                                    @foreach($member_grades as $grade)
                                         <option value="{{ $grade->id }}">{{ $grade->name }}</option>
                                     @endforeach
                                 </select>

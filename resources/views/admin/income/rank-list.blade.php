@@ -82,7 +82,7 @@
                                         <td scope="col" class="text-center">{{ $list->firstItem() + $key }}</td>
                                         <td scope="col" class="text-center">{{ $value->user_id }}</td>
                                         <td scope="col" class="text-center">{{ $value->user->name }}</td>
-                                        <td scope="col" class="text-center">{{ $value->user->profile->grade->name }}</td>
+                                        <td scope="col" class="text-center">{{ $value->user->member->grade->name }}</td>
                                         <td scope="col" class="text-center">{{ $value->income->coin->name }}</td>
                                         <td scope="col" class="text-center">{{ $value->amount }}</td>
                                         <td scope="col" class="text-center">{{ $value->rankBonus->self_sales }}</td>

@@ -22,10 +22,12 @@ class DepositController extends Controller
     {
         $this->kakaoApi = new KakaoApi();
     }
-    
+
     public function index()
     {
-        $assets = Asset::where('user_id', auth()->id())
+        $user = auth()->user();
+
+        $assets = Asset::where('member_id', $user->member->id)
         ->whereHas('coin', function ($query) {
             $query->where('is_active', 'y');
             $query->where('is_asset', 'y');
@@ -42,7 +44,7 @@ class DepositController extends Controller
         $asset = Asset::findOrFail($asset_id[0]);
 
         $amount = $request['amount'];
-        
+
         return view('asset.deposit-confirm', compact(['asset', 'amount']));
     }
 
@@ -65,6 +67,7 @@ class DepositController extends Controller
         DB::beginTransaction();
 
         try {
+            $user = auth()->user();
 
             $asset_id = Hashids::decode($validated['asset']);
             $asset = Asset::findOrFail($asset_id[0]);
@@ -72,7 +75,7 @@ class DepositController extends Controller
             $file_name = '_' . time() . '_' . auth()->id() . '.jpg';
 
             $deposit = AssetTransfer::create([
-                'user_id' => auth()->id(),
+                'member_id' => $user->member->id,
                 'asset_id' => $asset->id,
                 'type' => 'deposit',
                 'amount' => $validated['amount'],
@@ -85,7 +88,7 @@ class DepositController extends Controller
 
             DB::commit();
 
-            $message = 'UID '.auth()->id().' 회원님이 입금 신청하였습니다.';
+            $message = 'UID '.$user->id.' 회원님이 입금 신청하였습니다.';
             $this->kakaoApi->sendPurchaseNotification($message);
 
             return response()->json([
@@ -106,15 +109,16 @@ class DepositController extends Controller
 
     public function list()
     {
+        $user = auth()->user();
         $limit = 10;
 
-        $list = AssetTransfer::where('user_id', Auth()->id())
+        $list = AssetTransfer::where('member_id', $user->member->id)
             ->where('type', 'deposit')
             ->latest()
             ->take($limit)
             ->get();
 
-        $total_count = AssetTransfer::where('user_id', auth()->id())
+        $total_count = AssetTransfer::where('member_id', $user->member->id)
             ->where('type', 'deposit')
             ->count();
 
@@ -125,18 +129,20 @@ class DepositController extends Controller
 
     public function loadMore(Request $request)
     {
+        $user = auth()->user();
+
         $offset = $request->input('offset', 0);
         $limit = $request->input('limit', 10);
 
         $query = AssetTransfer::with('asset.coin')
-            ->where('user_id', auth()->id())
+            ->where('member_id', $user->member->id)
             ->where('type', 'deposit')
             ->orderByDesc('id');
 
         $items = $query->skip($offset)->take($limit + 1)->get();
 
         $hasMore = $items->count() > $limit;
-        
+
         $items = $items->take($limit)->map(function ($item) {
             return [
                 'created_at' => $item->created_at->format('Y-m-d'),

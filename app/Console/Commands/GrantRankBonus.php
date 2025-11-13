@@ -2,7 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Models\User;
+use App\Models\Member;
+use App\Services\BonusService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
@@ -29,9 +30,10 @@ class GrantRankBonus extends Command
     {
         Log::channel('bonus')->info('Starting rank bonus grant process');
 
-        User::with('profile')->chunk(100, function ($users) {
-            foreach ($users as $user) {
-               $user->profile->rankBonus();
+        Member::chunk(100, function ($members) {
+            $service = new BonusService();
+            foreach ($members as $member) {
+               $service->rankBonus($member);
             }
         });
 

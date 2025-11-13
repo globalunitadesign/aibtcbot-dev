@@ -11,7 +11,7 @@ class RankBonusReferral extends Model
     use HasFactory, TruncatesDecimals;
 
     protected $fillable = [
-        'user_id',
+        'member_id',
         'bonus_id',
         'level',
         'self_sales',
@@ -23,9 +23,9 @@ class RankBonusReferral extends Model
         'group_sales' => 'decimal:9',
     ];
 
-    public function user()
+    public function member()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(Member::class, 'member_id', 'id');
     }
 
     public function rankBonus()

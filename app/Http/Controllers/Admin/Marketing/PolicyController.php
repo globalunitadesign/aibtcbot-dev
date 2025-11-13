@@ -27,9 +27,9 @@ class PolicyController extends Controller
                 $policies = ReferralMatchingPolicy::where('marketing_id', $request->id)->get();
 
                 $modify_logs = PolicyModifyLog::join('referral_matching_policies', 'referral_matching_policies.id', '=', 'policy_modify_logs.policy_id')
-                    ->join('user_grades', 'user_grades.id', '=', 'referral_matching_policies.grade_id')
+                    ->join('member_grades', 'member_grades.id', '=', 'referral_matching_policies.grade_id')
                     ->join('admins', 'admins.id', '=', 'policy_modify_logs.admin_id')
-                    ->select('user_grades.name as grade_name', 'admins.name', 'policy_modify_logs.*')
+                    ->select('member_grades.name as grade_name', 'admins.name', 'policy_modify_logs.*')
                     ->where('referral_matching_policies.marketing_id', $marketing->id)
                     ->where('policy_modify_logs.policy_type', 'referral_matching_policies')
                     ->orderBy('policy_modify_logs.created_at', 'desc')
@@ -70,9 +70,9 @@ class PolicyController extends Controller
                 $policies = ReferralPolicy::where('marketing_id', $request->id)->get();
 
                 $modify_logs = PolicyModifyLog::join('referral_policies', 'referral_policies.id', '=', 'policy_modify_logs.policy_id')
-                    ->join('user_grades', 'user_grades.id', '=', 'referral_policies.grade_id')
+                    ->join('member_grades', 'member_grades.id', '=', 'referral_policies.grade_id')
                     ->join('admins', 'admins.id', '=', 'policy_modify_logs.admin_id')
-                    ->select('user_grades.name as grade_name', 'admins.name', 'policy_modify_logs.*')
+                    ->select('member_grades.name as grade_name', 'admins.name', 'policy_modify_logs.*')
                     ->where('referral_policies.marketing_id', $marketing->id)
                     ->where('policy_modify_logs.policy_type', 'referral_policies')
                     ->orderBy('policy_modify_logs.created_at', 'desc')

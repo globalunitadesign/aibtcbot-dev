@@ -55,8 +55,8 @@
                                     <input type="text" name="code" class="form-control required" required>
                                 </div>
                                 <div class="mb-4">
-                                    <label for="inputParentId" class="form-label required">{{ __('user.recommender_uid') }}</label>
-                                    <input type="text" name="parentId" id="inputParentId" @if($mid)value="{{ $mid }}"@endif class="form-control required" required>
+                                    <label for="inputReferrerId" class="form-label required">{{ __('user.recommender_uid') }}</label>
+                                    <input type="text" name="referrerId" id="inputReferrerId" @if($mid)value="{{ $mid }}"@endif class="form-control required" required>
                                 </div>
                                 <div class="mb-4">
                                     <label for="inputMetaUid" class="form-label">{{ __('user.meta_id') }}</label>
@@ -85,9 +85,9 @@
     @csrf
     <input type="hidden" name="email" id="inputEmailCheck">
 </form>
-<form method="POST" action="{{ route('register.parentCheck') }}"  id="parentCheckForm" >
+<form method="POST" action="{{ route('register.referrerCheck') }}"  id="referrerCheckForm" >
     @csrf
-    <input type="hidden" name="parentId" id="inputParentCheck">
+    <input type="hidden" name="referrerId" id="inputReferrerCheck">
 </form>
 @endsection
 

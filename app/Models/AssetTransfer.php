@@ -15,7 +15,7 @@ class AssetTransfer extends Model
     use HasFactory, TruncatesDecimals;
 
     protected $fillable = [
-        'user_id',
+        'member_id',
         'asset_id',
         'type',
         'status',
@@ -47,9 +47,9 @@ class AssetTransfer extends Model
         'waiting_period',
     ];
 
-    public function user()
+    public function member()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(Member::class, 'member_id', 'id');
     }
 
     public function asset()
@@ -183,10 +183,10 @@ class AssetTransfer extends Model
 
             DB::commit();
 
-            $profile = UserProfile::where('user_id', $asset->user_id)->first();
+            $member = Member::where('user_id', $asset->user_id)->first();
 
-            $profile->checkUserValidity();
-            $profile->checkUserGrade();
+            $member->checkMemberValidity();
+            $member->checkMemberGrade();
 
         } catch (\Throwable $e) {
 

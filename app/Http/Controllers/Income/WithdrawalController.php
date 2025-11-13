@@ -17,20 +17,22 @@ class WithdrawalController extends Controller
 {
     public function __construct()
     {
-        
+
     }
-    
+
     public function index()
     {
-        $incomes = Income::where('user_id', auth()->id())
+        $user = auth()->user();
+
+        $incomes = Income::where('member_id', $user->member->id)
         ->whereHas('coin', function ($query) {
             $query->where('is_active', 'y');
             $query->where('is_income', 'y');
         })
         ->get();
-     
+
         return view('income.withdrawal', compact('incomes'));
-    } 
+    }
 
     public function store(Request $request)
     {
@@ -44,13 +46,14 @@ class WithdrawalController extends Controller
         DB::beginTransaction();
 
         try {
+            $user = auth()->user();
             $asset_policy = AssetPolicy::first();
 
             if (!$asset_policy->isWithdrawalAvailableToday()) {
                 throw new \Exception(__('asset.withdrawal_disabled_day_notice'));
             }
 
-            $user = UserProfile::where('user_id', auth()->id())->first();
+            $user = UserProfile::where('user_id', $user->id)->first();
 
             if($user->is_frozen === 'y') {
                 throw new \Exception(__('asset.withdrawal_frozen_account_notice'));
@@ -67,7 +70,7 @@ class WithdrawalController extends Controller
             }
 
             $income = Income::findOrFail($income_id[0]);
-            
+
             if($income->balance < $validated['amount']) {
                 throw new \Exception(__('asset.lack_balance_notice'));
             }
@@ -75,10 +78,10 @@ class WithdrawalController extends Controller
             $amount = $validated['amount'];
             $tax = $validated['tax'] ?? 0;
             $fee = $validated['fee'] ?? 0;
-            $actual_amount = $amount - $tax - $fee; 
+            $actual_amount = $amount - $tax - $fee;
 
             $incomeTransfer = IncomeTransfer::create([
-                'user_id' => auth()->id(),
+                'member_id' => $user->member->id,
                 'income_id' => $income->id,
                 'type' => 'withdrawal',
                 'amount' => $amount,
@@ -88,17 +91,17 @@ class WithdrawalController extends Controller
                 'before_balance' => $income->balance,
                 'after_balance' => $income->balance - $amount,
             ]);
-            
+
             $income->decrement('balance', $amount);
 
             DB::commit();
-        
+
             return response()->json([
                 'status' => 'success',
                 'message' =>  __('asset.withdrawal_apply_notice'),
                 'url' => route('income.withdrawal.complete', ['id' => $incomeTransfer->id]),
             ]);
-        
+
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -120,15 +123,16 @@ class WithdrawalController extends Controller
 
     public function list()
     {
+        $user = auth()->user();
         $limit = 10;
 
-        $list = IncomeTransfer::where('user_id', Auth()->id())
+        $list = IncomeTransfer::where('member_id', $user->member->id)
             ->where('type', 'withdrawal')
             ->latest()
             ->take($limit)
             ->get();
 
-        $total_count = IncomeTransfer::where('user_id', auth()->id())
+        $total_count = IncomeTransfer::where('member_id', $user->member->id)
             ->where('type', 'withdrawal')
             ->count();
 
@@ -140,18 +144,20 @@ class WithdrawalController extends Controller
 
     public function loadMore(Request $request)
     {
+        $user = auth()->user();
+
         $offset = $request->input('offset', 0);
         $limit = $request->input('limit', 10);
 
         $query = IncomeTransfer::with('income.coin')
-            ->where('user_id', auth()->id())
+            ->where('member_id', $user->member->id)
             ->where('type', 'withdrawal')
             ->orderByDesc('id');
 
         $items = $query->skip($offset)->take($limit + 1)->get();
 
         $hasMore = $items->count() > $limit;
-        
+
         $items = $items->take($limit)->map(function ($item) {
             return [
                 'created_at' => $item->created_at->format('Y-m-d'),

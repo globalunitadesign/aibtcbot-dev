@@ -168,7 +168,7 @@
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td class="text-center">{{ $bonus->user_id }}</td>
                                     <td class="text-center">{{ $bonus->user->name }}</td>
-                                    <td class="text-center">{{ $bonus->user->profile->grade->name }}</td>
+                                    <td class="text-center">{{ $bonus->user->member->grade->name }}</td>
                                     <td class="text-center">{{ $bonus->transfer->income->coin->name }}</td>
                                     <td class="text-center">{{ $bonus->bonus }}</td>
                                     <td scope="col" class="text-center">
@@ -198,7 +198,7 @@
                                         <td class="text-center"><i class="bi bi-arrow-return-right"></i></td>
                                         <td class="text-center">{{ $matching->user_id }}</td>
                                         <td class="text-center">{{ $matching->user->name }}</td>
-                                        <td class="text-center">{{ $matching->user->profile->grade->name }}</td>
+                                        <td class="text-center">{{ $matching->user->member->grade->name }}</td>
                                         <td class="text-center">{{ $matching->transfer->income->coin->name }}</td>
                                         <td class="text-center">{{ $matching->matching }}</td>
                                         <td scope="col" class="text-center">
@@ -263,7 +263,7 @@
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td class="text-center">{{ $bonus->user_id }}</td>
                                     <td class="text-center">{{ $bonus->user->name }}</td>
-                                    <td class="text-center">{{ $bonus->user->profile->grade->name }}</td>
+                                    <td class="text-center">{{ $bonus->user->member->grade->name }}</td>
                                     <td class="text-center">{{ $bonus->transfer->income->coin->name }}</td>
                                     <td class="text-center">{{ $bonus->bonus }}</td>
                                     <td scope="col" class="text-center">
@@ -293,7 +293,7 @@
                                         <td class="text-center"><i class="bi bi-arrow-return-right"></i></td>
                                         <td class="text-center">{{ $matching->user_id }}</td>
                                         <td class="text-center">{{ $matching->user->name }}</td>
-                                        <td class="text-center">{{ $matching->user->profile->grade->name }}</td>
+                                        <td class="text-center">{{ $matching->user->member->grade->name }}</td>
                                         <td class="text-center">{{ $matching->transfer->income->coin->name }}</td>
                                         <td class="text-center">{{ $matching->matching }}</td>
                                         <td scope="col" class="text-center">

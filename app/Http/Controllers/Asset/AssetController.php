@@ -18,31 +18,32 @@ class AssetController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
-   
+
     public function index(Request $request)
     {
+        $user = auth()->user();
 
         $asset_id = Hashids::decode($request->id);
         $asset = Asset::findOrFail($asset_id[0]);
 
-        if ($asset->user_id != Auth()->id() ) {
+        if ($asset->member_id != $user->member->id) {
              return redirect()->route('home');
         }
-   
+
         $data = $asset->getAssetInfo();
 
         $limit = 5;
-        $list = AssetTransfer::where('user_id', Auth()->id())
+        $list = AssetTransfer::where('member_id', $user->member->id)
             ->where('asset_id', $asset->id)
             ->where('status', 'completed')
             ->latest()
             ->take($limit)
             ->get();
 
-        $total_count = AssetTransfer::where('user_id', auth()->id())
+        $total_count = AssetTransfer::where('member_id', $user->member->id)
             ->where('asset_id', $asset->id)
             ->where('status', 'completed')
             ->count();
@@ -55,24 +56,25 @@ class AssetController extends Controller
 
      public function list(Request $request)
     {
-       
+        $user = auth()->user();
+
         $decrypted_id = Hashids::decode($request->id);
         $asset = Asset::findOrFail($decrypted_id[0]);
         $encrypted_id = $asset->encrypted_id;
 
-        if ($asset->user_id != Auth()->id() ) {
+        if ($asset->member_id != $user->member->id) {
              return redirect()->route('home');
         }
-   
+
         $limit = 10;
-        $list = AssetTransfer::where('user_id', Auth()->id())
+        $list = AssetTransfer::where('member_id', $user->member->id)
             ->where('asset_id', $asset->id)
             ->where('status', 'completed')
             ->latest()
             ->take($limit)
             ->get();
 
-        $total_count = AssetTransfer::where('user_id', auth()->id())
+        $total_count = AssetTransfer::where('member_id', $user->member->id)
             ->where('asset_id', $asset->id)
             ->where('status', 'completed')
             ->count();
@@ -85,13 +87,15 @@ class AssetController extends Controller
 
     public function loadMore(Request $request)
     {
+        $user = auth()->user();
+
         $decrypted_id = Hashids::decode($request->encrypted_id);
         $asset = Asset::findOrFail($decrypted_id[0]);
 
         $offset = $request->input('offset', 0);
         $limit = $request->input('limit', 10);
 
-        $query = AssetTransfer::where('user_id', auth()->id())
+        $query = AssetTransfer::where('member_id', $user->member->id)
             ->where('asset_id', $asset->id)
             ->where('status', 'completed')
             ->latest();
@@ -99,7 +103,7 @@ class AssetController extends Controller
         $items = $query->skip($offset)->take($limit + 1)->get();
 
         $hasMore = $items->count() > $limit;
-        
+
         $items = $items->take($limit)->map(function ($item) {
             return [
                 'created_at' => $item->created_at->format('Y-m-d'),
@@ -113,4 +117,4 @@ class AssetController extends Controller
             'hasMore' => $hasMore,
         ]);
     }
-}   
+}

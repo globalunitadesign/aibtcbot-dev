@@ -92,7 +92,7 @@ class ReferralMatchingPolicy extends Model
 
     public function grade()
     {
-        return $this->belongsTo(UserGrade::class, 'grade_id', 'id');
+        return $this->belongsTo(MemberGrade::class, 'grade_id', 'id');
     }
 
 

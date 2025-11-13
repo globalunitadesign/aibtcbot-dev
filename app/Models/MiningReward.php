@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\BonusService;
 use App\Traits\TruncatesDecimals;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -153,18 +154,8 @@ class MiningReward extends Model
                     'timestamp' => now(),
                 ]);
 
-                $user = $reward->user;
-                $profile = $user->profile;
-
-                if (!$profile) {
-                    Log::channel('mining')->warning('Missing profile for level bonus', [
-                        'reward_id' => $reward->id,
-                        'user_id' => $reward->user_id,
-                    ]);
-                    return;
-                }
-
-                $profile->levelBonus($mining_profit);
+                $service = new BonusService();
+                $service->levelBonus($mining_profit);
 
                 DB::commit();
 

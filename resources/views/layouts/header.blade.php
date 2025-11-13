@@ -59,32 +59,32 @@
                         </ul>
                     </div>
                 </li>
-                <a class="nav-link text-inverse fs-5 pb-0" href="{{ route('chart.ref') }}">
-                    <li class="nav-item d-flex justify-content-between align-items-center border-bottom py-3">
-                        <div class="ms-3">{{ __('layout.direct_referral_tree') }}</div>
-                        <i class="ti ti-chevron-right"></i>
-                    </li>
-                </a>
-                <a class="nav-link text-inverse fs-5 pb-0" href="{{ route('chart.aff') }}">
-                    <li class="nav-item d-flex justify-content-between align-items-center border-bottom py-3">
-                        <div class="ms-3">{{ __('layout.downline_tree') }}</div>
-                        <i class="ti ti-chevron-right"></i>
-                    </li>
-                </a>
-                <a class="nav-link text-inverse fs-5 pb-0" href="{{ route('profile.dashboard') }}">
-                    <li class="nav-item d-flex justify-content-between align-items-center border-bottom py-3">
-                        <div class="ms-3">{{ __('user.dashboard') }}</div>
-                        <i class="ti ti-chevron-right"></i>
-                    </li>
-                </a>
                 {{--
-                <a class="nav-link text-inverse fs-5 pb-0" href="{{ route('about') }}">
-                    <li class="nav-item d-flex justify-content-between align-items-center border-bottom py-3">
-                        <div class="ms-3">{{ __('layout.company_about') }}</div>
-                        <i class="ti ti-chevron-right"></i>
-                    </li>
-                </a>
-                --}}
+                <a class="nav-link text-inverse fs-5 pb-0" href="{{ route('chart.ref') }}">
+                   <li class="nav-item d-flex justify-content-between align-items-center border-bottom py-3">
+                       <div class="ms-3">{{ __('layout.direct_referral_tree') }}</div>
+                       <i class="ti ti-chevron-right"></i>
+                   </li>
+               </a>
+               <a class="nav-link text-inverse fs-5 pb-0" href="{{ route('chart.aff') }}">
+                   <li class="nav-item d-flex justify-content-between align-items-center border-bottom py-3">
+                       <div class="ms-3">{{ __('layout.downline_tree') }}</div>
+                       <i class="ti ti-chevron-right"></i>
+                   </li>
+               </a>
+               <a class="nav-link text-inverse fs-5 pb-0" href="{{ route('profile.dashboard') }}">
+                   <li class="nav-item d-flex justify-content-between align-items-center border-bottom py-3">
+                       <div class="ms-3">{{ __('user.dashboard') }}</div>
+                       <i class="ti ti-chevron-right"></i>
+                   </li>
+               </a>
+               <a class="nav-link text-inverse fs-5 pb-0" href="{{ route('about') }}">
+                   <li class="nav-item d-flex justify-content-between align-items-center border-bottom py-3">
+                       <div class="ms-3">{{ __('layout.company_about') }}</div>
+                       <i class="ti ti-chevron-right"></i>
+                   </li>
+               </a>
+               --}}
                 <a class="nav-link text-inverse fs-5 pb-0" href="{{ route('board.list', ['code' =>'product'])}}">
                     <li class="nav-item d-flex justify-content-between align-items-center border-bottom py-3">
                         <div class="ms-3">{{ __('layout.product_intro') }}</div>

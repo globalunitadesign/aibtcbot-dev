@@ -25,8 +25,7 @@ use App\Http\Controllers\Income\IncomeController;
 use App\Http\Controllers\Income\DepositController as IncomeDepositController;
 use App\Http\Controllers\Income\WithdrawalController as IncomeWithdrawalController;
 
-use App\Http\Controllers\Trading\TradingController;
-
+use App\Http\Controllers\Avatar\AvatarController;
 use App\Http\Controllers\Mining\MiningController;
 
 use App\Http\Controllers\Chart\RefChartController;
@@ -49,7 +48,7 @@ Route::get('register/{mid?}', [RegisterController::class, 'index'])->name('regis
 Route::post('register', [RegisterController::class, 'register']);
 Route::post('register/account-check', [RegisterController::class, 'accountCheck'])->name('register.accountCheck');
 Route::post('register/email-check', [RegisterController::class, 'emailCheck'])->name('register.emailCheck');
-Route::post('register/parent-check', [RegisterController::class, 'parentCheck'])->name('register.parentCheck');
+Route::post('register/referrer-check', [RegisterController::class, 'referrerCheck'])->name('register.referrerCheck');
 
 Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
@@ -131,6 +130,7 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
 
     Route::prefix('income')->group(function () {
         Route::get('/', [IncomeController::class, 'index'])->name('income');
+        Route::get('avatar/{id}', [IncomeController::class, 'avatar'])->name('income.avatar');
         Route::prefix('list')->group(function () {
             Route::get('{id}', [IncomeController::class, 'list'])->name('income.list');
             Route::post('load-more', [IncomeController::class, 'loadMore'])->name('income.list.loadMore');
@@ -156,15 +156,9 @@ Route::middleware(['auth', 'session.timeout'])->group(function () {
         });
     });
 
-    Route::prefix('trading')->group(function () {
-        Route::get('/', [TradingController::class, 'index'])->name('trading');
-        Route::get('wait', [TradingController::class, 'wait'])->name('trading.wait');
-        Route::post('store', [TradingController::class, 'store'])->name('trading.store');
-        Route::get('done', [TradingController::class, 'done'])->name('trading.done');
-        Route::prefix('list')->group(function () {
-            Route::get('/', [TradingController::class, 'list'])->name('trading.list');
-            Route::post('load-more', [TradingController::class, 'loadMore'])->name('trading.list.loadMore');
-        });
+    Route::prefix('avatar')->group(function () {
+        Route::get('view/{id}', [AvatarController::class, 'view'])->name('avatar.view');
+        Route::post('active', [AvatarController::class, 'active'])->name('avatar.active');
     });
 
     Route::prefix('mining')->group(function () {

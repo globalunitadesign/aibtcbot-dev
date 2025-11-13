@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coin;
 use App\Models\Mining;
 use App\Models\MiningReward;
 use App\Models\MiningPolicy;
@@ -24,6 +25,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use PragmaRX\Google2FA\Google2FA;
+use App\Services\MemberService;
 use Carbon\Carbon;
 
 class TestController extends Controller
@@ -37,15 +39,10 @@ class TestController extends Controller
    public function index()
     {
 
-        $policies = MiningPolicy::all();
+        $service = new MemberService();
 
-        foreach ($policies as $policy) {
-            $policy->setDailyStat();
-        }
-
-
-        Mining::storeMiningReward();
-        MiningReward::distributeProfit();
+        $root = User::find(1000011);
+        $avatar = $service->addAvatar($root);
 
     }
 }

@@ -22,18 +22,19 @@ class IncomeController extends Controller
 
     public function index(Request $request)
     {
+        $user = auth()->user();
 
         $income_id = Hashids::decode($request->id);
         $income = Income::findOrFail($income_id[0]);
 
-        if ($income->user_id != Auth()->id()) {
+        if ($income->member_id != $user->member->id) {
              return redirect()->route('home');
         }
 
         $data = $income->getIncomeInfo();
 
         $limit = 5;
-        $list = IncomeTransfer::where('user_id', Auth()->id())
+        $list = IncomeTransfer::where('member_id', $user->member->id)
             ->where('income_id', $income->id)
             ->when($request->filled('type'), function ($query) use ($request) {
                 return $query->where('type', $request->type);
@@ -43,7 +44,7 @@ class IncomeController extends Controller
             ->take($limit)
             ->get();
 
-        $total_count = IncomeTransfer::where('user_id', auth()->id())
+        $total_count = IncomeTransfer::where('member_id', $user->member->id)
             ->where('income_id', $income->id)
             ->when($request->filled('type'), function ($query) use ($request) {
                 return $query->where('type', $request->type);
@@ -56,18 +57,60 @@ class IncomeController extends Controller
         return view('income.income', compact('data', 'list', 'has_more', 'limit'));
     }
 
+    public function avatar(Request $request)
+    {
+        $user = auth()->user();
+
+        $avatars = $user->avatars->where('is_active', 'y');
+
+        $incomes = collect();
+        $income_ids = [];
+
+        $data = [
+            'total_bonus' => 0,
+            'total_balance' => 0,
+        ];
+
+        foreach ($avatars as $avatar) {
+            $income = $avatar->member->incomes->where('coin_id', $request->id)->first();
+            if ($income) {
+                $income_ids[] = $income->id;
+                $data['total_balance'] += $income->balance;
+
+                foreach ($income->transfers->whereIn('type', ['rank_bonus', 'referral_bonus', 'referral_matching', 'level_bonus', 'level_matching']) as $transfer) {
+                    $data['total_bonus'] += $transfer->amount;
+                }
+            }
+        }
+
+        $limit = 5;
+        $list = IncomeTransfer::whereIn('income_id', $income_ids)
+            ->when($request->filled('type'), fn($q) => $q->where('type', $request->type))
+            ->where('status', 'completed')
+            ->latest('id')
+            ->take($limit + 1)
+            ->get();
+
+        $has_more = $list->count() > $limit;
+        $list = $list->take($limit);
+
+        return view('income.avatar', compact('data', 'list', 'has_more', 'limit'));
+    }
+
     public function list(Request $request)
     {
+        $user = auth()->user();
+
         $income_id = Hashids::decode($request->id);
         $income = Income::findOrFail($income_id[0]);
 
-        if ($income->user_id != Auth()->id()) {
+        if ($income->member_id != $user->member->id) {
              return redirect()->route('home');
         }
 
         $limit = 10;
 
-        $list = IncomeTransfer::where('user_id', Auth()->id())
+        $list = IncomeTransfer::where('member_id', $user->member->id)
             ->when($request->filled('type'), function ($query) use ($request) {
                 return $query->where('type', $request->type);
             })
@@ -77,7 +120,7 @@ class IncomeController extends Controller
             ->take($limit)
             ->get();
 
-        $total_count = IncomeTransfer::where('user_id', auth()->id())
+        $total_count = IncomeTransfer::where('member_id', $user->member->id)
             ->when($request->filled('type'), function ($query) use ($request) {
                 return $query->where('type', $request->type);
             })
@@ -92,12 +135,14 @@ class IncomeController extends Controller
 
     public function loadMore(Request $request)
     {
+        $user = auth()->user();
+
         $income_id = Hashids::decode($request->id);
 
         $offset = $request->input('offset', 0);
         $limit = $request->input('limit', 10);
 
-        $query = IncomeTransfer::where('user_id', auth()->id())
+        $query = IncomeTransfer::where('member_id', $user->member->id)
             ->when($request->filled('type'), function ($query) use ($request) {
                 return $query->where('type', $request->type);
             })

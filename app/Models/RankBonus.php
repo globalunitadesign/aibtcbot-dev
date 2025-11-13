@@ -11,7 +11,7 @@ class RankBonus extends Model
     use HasFactory, TruncatesDecimals;
 
     protected $fillable = [
-        'user_id',
+        'member_id',
         'policy_id',
         'transfer_id',
         'self_sales',

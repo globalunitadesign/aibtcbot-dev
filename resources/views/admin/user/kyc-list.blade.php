@@ -16,7 +16,7 @@
                         <div class="table-responsive">
                             <table class="table text-nowrap align-middle mb-0 table-striped table-hover">
                                 <thead>
-                                    <tr class="border-2 border-bottom border-primary border-0"> 
+                                    <tr class="border-2 border-bottom border-primary border-0">
                                         <th scope="col" class="ps-0 text-center">번호</th>
                                         <th scope="col" class="text-center">아이디</th>
                                         <th scope="col" class="text-center">UID</th>
@@ -36,7 +36,7 @@
                                         <td class="text-center">{{ $value->user->account }}</td>
                                         <td class="text-center">{{ $value->user_id }}</td>
                                         <td class="text-center">{{ $value->user->name }}</td>
-                                        <td class="text-center">{{ $value->user->profile->grade->name }}</td>
+                                        <td class="text-center">{{ $value->user->member->grade->name }}</td>
                                         <td class="text-center">{{ $value->user->profile->phone }}</td>
                                         <td class="text-center">{{ $value->user->profile->email }}</td>
                                         <td class="text-center">{{ $value->status_text }}</td>

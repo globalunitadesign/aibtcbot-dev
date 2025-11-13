@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href=" {{ asset('images/logos/emblem.png') }}" size="32x32"> 
+    <link rel="icon" type="image/png" href=" {{ asset('images/logos/emblem.png') }}" size="32x32">
     <link rel="stylesheet" href="{{ asset('css/styles.min.css') }}"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-   
+
     <style>
         body {
             -webkit-user-select: none;
@@ -17,7 +17,7 @@
             -ms-user-select: none;
             user-select: none;
         }
-       
+
         .orgchart-container {
             overflow: hidden;
             width: 100%;
@@ -37,7 +37,7 @@
             color: #333;
             text-align: center;
         }
-        
+
         .orgchart-node .google-visualization-orgchart-node-name {
             font-size: 16px;
             font-weight: bold;
@@ -53,8 +53,8 @@
         }
 
         .google-visualization-orgchart-lineright {
-            border-right: 1px solid #000 !important; 
-        } 
+            border-right: 1px solid #000 !important;
+        }
 
         .google-visualization-orgchart-linebottom {
             border-bottom: 1px solid #000 !important;
@@ -88,7 +88,7 @@
         <a href="{{ url()->previous() }}">
             <button type="button" class="btn-close rounded-circle bg-light p-3 opacity-75"></button>
         </a>
-    </div>  
+    </div>
     @if(request()->has('admin'))
     <div class="card border-0 p-3 m-0">
         <div class="card-body p-0">
@@ -142,9 +142,9 @@ function drawChart() {
         let parent = node.parent || '';
         let info = node.info || '';
 
-        return [{ 
-            'v': id, 
-            'f': id + "<div class='text-muted text-center' style='width:200px;'>" + info + "</div>" 
+        return [{
+            'v': id,
+            'f': "<div class='text-muted text-center' style='width:200px;'>" + info + "</div>"
         }, parent, info];
     });
 
@@ -171,11 +171,11 @@ let scale = 1;
 let initialDistance = 0;
 
 
-const PC_MIN_SCALE = 0.5; 
-const PC_MAX_SCALE = 3;  
+const PC_MIN_SCALE = 0.5;
+const PC_MAX_SCALE = 3;
 const PC_ZOOM_SENSITIVITY = 0.05;
-const MOBILE_MIN_SCALE = 0.05; 
-const MOBILE_MAX_SCALE = 3;  
+const MOBILE_MIN_SCALE = 0.05;
+const MOBILE_MAX_SCALE = 3;
 const MOBILE_ZOOM_SENSITIVITY = 0.005;
 
 
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const zoomChange = event.deltaY < 0 ? PC_ZOOM_SENSITIVITY : -PC_ZOOM_SENSITIVITY;
         scale += zoomChange;
 
-   
+
         scale = Math.max(PC_MIN_SCALE, Math.min(PC_MAX_SCALE, scale));
 
         const mouseX = event.offsetX / zoomContainer.offsetWidth * 100;
@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     zoomContent.addEventListener('touchstart', (event) => {
         if (event.touches.length === 2) {
-           
+
             initialDistance = getDistance(event.touches);
         } else if (event.touches.length === 1) {
             isDragging = true;
@@ -248,9 +248,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     zoomContent.addEventListener('touchmove', (event) => {
         if (event.touches.length === 2) {
-         
+
             const currentDistance = getDistance(event.touches);
-            const zoomFactor = (currentDistance - initialDistance) * MOBILE_ZOOM_SENSITIVITY; 
+            const zoomFactor = (currentDistance - initialDistance) * MOBILE_ZOOM_SENSITIVITY;
             initialDistance = currentDistance;
 
             scale += zoomFactor;
@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
             zoomContent.style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
             event.preventDefault();
         } else if (isDragging && event.touches.length === 1) {
-       
+
             const touch = event.touches[0];
             const moveX = touch.clientX - startX;
             const moveY = touch.clientY - startY;
@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-  
+
     function getDistance(touches) {
         const dx = touches[0].clientX - touches[1].clientX;
         const dy = touches[0].clientY - touches[1].clientY;

@@ -10,21 +10,20 @@ use App\Models\Marketing;
 use App\Models\Mining;
 use App\Models\MiningPolicy;
 use App\Http\Controllers\Controller;
+use App\Services\BonusService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class MiningController extends Controller
 {
-    public function __construct()
-    {
-
-    }
 
     public function index($id)
     {
+        $user = auth()->user();
+
         $marketing = Marketing::find($id);
-        $assets = Asset::where('user_id', auth()->id())
+        $assets = Asset::where('member_id', $user->member->id)
             ->whereHas('coin', function ($query) {
                 $query->where('is_mining', 'y');
             })
@@ -51,11 +50,13 @@ class MiningController extends Controller
 
     public function confirm($id)
     {
+        $user = auth()->user();
+
         $mining = MiningPolicy::find($id);
 
         $marketing = Marketing::find($mining->marketing_id);
 
-        $asset = Asset::where('user_id', auth()->id())
+        $asset = Asset::where('member_id', $user->member->id)
             ->where('coin_id', $mining->coin_id)
             ->first();
 
@@ -72,9 +73,9 @@ class MiningController extends Controller
         $user = auth()->user();
         $policy = MiningPolicy::find($request->policy);
 
-        $asset = Asset::where('user_id', auth()->id())->where('coin_id', $policy->coin_id)->first();
-        $refund = Asset::where('user_id', auth()->id())->where('coin_id', $policy->refund_coin_id)->first();
-        $reward = Income::where('user_id', auth()->id())->where('coin_id', $policy->reward_coin_id)->first();
+        $asset = Asset::where('member_id', $user->member->id)->where('coin_id', $policy->coin_id)->first();
+        $refund = Asset::where('member_id', $user->member->id)->where('coin_id', $policy->refund_coin_id)->first();
+        $reward = Income::where('member_id', $user->member->id)->where('coin_id', $policy->reward_coin_id)->first();
 
         if ($asset->balance < $request->coin_amount) {
             return response()->json([
@@ -125,7 +126,7 @@ class MiningController extends Controller
             ]);
 
             AssetTransfer::create([
-                'user_id' => $mining->user_id,
+                'member_id' => $user->member->id,
                 'asset_id' => $asset->id,
                 'type' => 'mining',
                 'status' => 'completed',
@@ -139,7 +140,8 @@ class MiningController extends Controller
                 'balance' => $asset->balance - $request->coin_amount
             ]);
 
-            $user->profile->referralBonus($mining);
+            $service = new BonusService();
+            $service->referralBonus($mining);
 
             DB::commit();
 

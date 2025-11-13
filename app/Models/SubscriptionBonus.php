@@ -10,20 +10,20 @@ class SubscriptionBonus extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'member_id',
         'transfer_id',
         'referrer_id',
         'withdrawal_id',
         'bonus',
     ];
-    
+
     protected $casts = [
         'bonus' => 'decimal:9',
     ];
 
-    public function user()
+    public function member()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(Member::class, 'member_id', 'id');
     }
 
     public function transfer()

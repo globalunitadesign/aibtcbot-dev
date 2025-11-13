@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Income;
 
-use App\Models\UserGrade;
+use App\Models\MemberGrade;
 use App\Models\SubscriptionPolicy;
 use App\Models\ReferralPolicy;
 use App\Models\ReferralMatchingPolicy;
@@ -26,9 +26,9 @@ class PolicyController extends Controller
                 $policies = ReferralPolicy::all();
 
                 $modify_logs = PolicyModifyLog::join('referral_policies', 'referral_policies.id', '=', 'policy_modify_logs.policy_id')
-                    ->join('user_grades', 'user_grades.id', '=', 'referral_policies.grade_id')
+                    ->join('member_grades', 'member_grades.id', '=', 'referral_policies.grade_id')
                     ->join('admins', 'admins.id', '=', 'policy_modify_logs.admin_id')
-                    ->select('user_grades.name as grade_name', 'admins.name', 'policy_modify_logs.*')
+                    ->select('member_grades.name as grade_name', 'admins.name', 'policy_modify_logs.*')
                     ->where('policy_modify_logs.policy_type', 'referral_policies')
                     ->orderBy('policy_modify_logs.created_at', 'desc')
                     ->get();
@@ -40,9 +40,9 @@ class PolicyController extends Controller
                 $policies = ReferralMatchingPolicy::all();
 
                 $modify_logs = PolicyModifyLog::join('referral_matching_policies', 'referral_matching_policies.id', '=', 'policy_modify_logs.policy_id')
-                    ->join('user_grades', 'user_grades.id', '=', 'referral_matching_policies.grade_id')
+                    ->join('member_grades', 'member_grades.id', '=', 'referral_matching_policies.grade_id')
                     ->join('admins', 'admins.id', '=', 'policy_modify_logs.admin_id')
-                    ->select('user_grades.name as grade_name', 'admins.name', 'policy_modify_logs.*')
+                    ->select('member_grades.name as grade_name', 'admins.name', 'policy_modify_logs.*')
                     ->where('policy_modify_logs.policy_type', 'referral_matching_policies')
                     ->orderBy('policy_modify_logs.created_at', 'desc')
                     ->get();
@@ -53,26 +53,26 @@ class PolicyController extends Controller
 
                 $policies = RankPolicy::all();
 
-                $user_grades = UserGrade::all();
+                $member_grades = MemberGrade::all();
 
                 $modify_logs = PolicyModifyLog::join('rank_policies', 'rank_policies.id', '=', 'policy_modify_logs.policy_id')
-                    ->join('user_grades', 'user_grades.id', '=', 'rank_policies.grade_id')
+                    ->join('member_grades', 'member_grades.id', '=', 'rank_policies.grade_id')
                     ->join('admins', 'admins.id', '=', 'policy_modify_logs.admin_id')
-                    ->select('user_grades.name as grade_name', 'admins.name', 'policy_modify_logs.*')
+                    ->select('member_grades.name as grade_name', 'admins.name', 'policy_modify_logs.*')
                     ->where('policy_modify_logs.policy_type', 'rank_policies')
                     ->orderBy('policy_modify_logs.created_at', 'desc')
                     ->get();
 
-                return view('admin.income.policy.rank', compact('policies', 'user_grades', 'modify_logs'));
+                return view('admin.income.policy.rank', compact('policies', 'member_grades', 'modify_logs'));
 
             default :
 
                 $policies = SubscriptionPolicy::all();
 
                 $modify_logs = PolicyModifyLog::join('subscription_policies', 'subscription_policies.id', '=', 'policy_modify_logs.policy_id')
-                    ->join('user_grades', 'user_grades.id', '=', 'subscription_policies.grade_id')
+                    ->join('member_grades', 'member_grades.id', '=', 'subscription_policies.grade_id')
                     ->join('admins', 'admins.id', '=', 'policy_modify_logs.admin_id')
-                    ->select('user_grades.name as grade_name', 'admins.name', 'policy_modify_logs.*')
+                    ->select('member_grades.name as grade_name', 'admins.name', 'policy_modify_logs.*')
                     ->where('policy_modify_logs.policy_type', 'subscription_policies')
                     ->orderBy('policy_modify_logs.created_at', 'desc')
                     ->get();
