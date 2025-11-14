@@ -183,7 +183,7 @@ class AssetTransfer extends Model
 
             DB::commit();
 
-            $member = Member::where('user_id', $asset->user_id)->first();
+            $member = Member::where('id', $asset->member_id)->first();
 
             $member->checkMemberValidity();
             $member->checkMemberGrade();
