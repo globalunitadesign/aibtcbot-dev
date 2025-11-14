@@ -6,7 +6,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="card-title">{{ __('수동 입금') }}</h5>    
+                    <h5 class="card-title">{{ __('수동 입금') }}</h5>
                 </div>
                 <form method="POST" action="{{ route('admin.asset.deposit.store') }}" id="ajaxForm">
                     @csrf
@@ -23,8 +23,8 @@
                                 <th class="text-center align-middle">종류</th>
                                 <td class="align-middle">
                                     <select name="id" class="form-select w-50">
-                                        @foreach($user->assets as $val)
-                                        <option value="{{ $val->id }}">{{ $val->coin->name }}</option>
+                                        @foreach($user->member->assets as $asset)
+                                        <option value="{{ $asset->id }}">{{ $asset->coin->name }}</option>
                                         @endforeach
                                     </select>
                                 </td>

@@ -80,6 +80,7 @@ class MiningController extends Controller
             ]);
         }
 
+        /*
         if ($policy->marketing->is_required === 'n') {
 
             $coin_amount = $user->profile->getMarketingAmount();
@@ -98,6 +99,7 @@ class MiningController extends Controller
                 ]);
             }
         }
+       */
 
         DB::beginTransaction();
 

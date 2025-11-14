@@ -113,7 +113,7 @@ class Mining extends Model
 
     public function getBenefitRule($type)
     {
-        $benefit_rules = $this->policy->marketing->benefit_rules;
+        $benefit_rules = $this->policy->benefit_rules;
 
         return $benefit_rules[$type];
     }

@@ -25,6 +25,11 @@ class Member extends Authenticatable
         'is_valid',
     ];
 
+    protected $appends = [
+        'referral_count',
+        'is_referral',
+    ];
+
     public function parent()
     {
         return $this->belongsTo(Member::class, 'parent_id', 'id');
@@ -262,6 +267,11 @@ class Member extends Authenticatable
 
         $next_level = $current_level + 1;
         $next_grade = MemberGrade::where('level', $next_level)->first();
+
+        if (!$next_grade) {
+            return;
+        }
+
         $next_policy = GradePolicy::where('grade_id', $next_grade->id)->first();
 
         if (!$next_policy) {
@@ -273,7 +283,7 @@ class Member extends Authenticatable
             $self_sales >= $next_policy->self_sales &&
             $group_sales >= $next_policy->group_sales
         ) {
-            $result = UserProfile::where('id', $this->id)->update([
+            $result = Member::where('id', $this->id)->update([
                 'grade_id' => $next_grade->id
             ]);
 

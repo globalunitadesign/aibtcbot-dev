@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin\Mining;
 
 use App\Exports\StakingPolicyExport;
 use App\Models\Coin;
-use App\Models\Marketing;
+use App\Models\MemberGrade;
 use App\Models\Mining;
 use App\Models\MiningDailyStat;
 use App\Models\MiningPolicy;
@@ -13,6 +13,8 @@ use App\Models\LevelPolicy;
 use App\Models\LanguagePolicy;
 use App\Models\PolicyModifyLog;
 use App\Http\Controllers\Controller;
+use App\Models\ReferralMatchingPolicy;
+use App\Models\ReferralPolicy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -41,9 +43,7 @@ class PolicyController extends Controller
         switch ($request->mode) {
             case 'create' :
 
-                $marketings = Marketing::all();
-
-                return view('admin.mining.policy.create', compact('marketings', 'coins', 'locale', 'all_days'));
+                return view('admin.mining.policy.create', compact('coins', 'locale', 'all_days'));
 
             case 'translation' :
 
@@ -110,7 +110,10 @@ class PolicyController extends Controller
             $data = $request->except('translation', 'reward_days');
 
             $data['reward_days'] = implode(',', $days);
+            $data['benefit_rules'] = $request->benefit_rules;
+
             $mining_policy = MiningPolicy::create($data);
+
 
             MiningDailyStat::updateOrCreate([
                 'policy_id' => $mining_policy->id,
@@ -127,6 +130,20 @@ class PolicyController extends Controller
                     'locale' => $code,
                     'name' => $locale['name'],
                     'memo' => $locale['memo'],
+                ]);
+            }
+
+            $grades = MemberGrade::all();
+
+            foreach ($grades as $grade) {
+                ReferralPolicy::create([
+                    'mining_policy_id' => $mining_policy->id,
+                    'grade_id' => $grade->id,
+                ]);
+
+                ReferralMatchingPolicy::create([
+                    'mining_policy_id' => $mining_policy->id,
+                    'grade_id' => $grade->id,
                 ]);
             }
 

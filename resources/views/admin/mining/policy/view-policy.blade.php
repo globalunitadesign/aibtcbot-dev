@@ -15,11 +15,6 @@
                 </a>
             </li>
             <li class="nav-item" role="presentation">
-                <a href="{{ route('admin.mining.policy.view', ['mode' => 'profit', 'id' => $view->id]) }}" class="nav-link @if(request('mode') == 'profit') active @endif">
-                    수익 정책
-                </a>
-            </li>
-            <li class="nav-item" role="presentation">
                 <a href="{{ route('admin.mining.policy.view', ['mode' => 'translation', 'id' => $view->id]) }}" class="nav-link @if(request('mode') == 'translation') active @endif">
                     다국어 설정
                 </a>
@@ -120,6 +115,38 @@
                                             {{ $label }}
                                         </label>
                                     @endforeach
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center align-middle">추천 보너스</th>
+                                <td class="align-middle">
+                                    <input type="radio" name="benefit_rules[referral_bonus]" id="is_referral_bonus" value="y" class="form-check-input" @if($view->benefit_rules['referral_bonus'] == 'y') checked @endif>
+                                    <label class="form-check-label me-3" for="is_referral_bonus">활성</label>
+                                    <input type="radio" name="benefit_rules[referral_bonus]" id="is_not_referral_bonus" value="n" class="form-check-input" @if($view->benefit_rules['referral_bonus'] == 'n') checked @endif>
+                                    <label class="form-check-label" for="is_not_referral_bonus">비활성</label>
+                                </td>
+                                <th class="text-center align-middle">추천 매칭</th>
+                                <td class="align-middle">
+                                    <input type="radio" name="benefit_rules[referral_matching]" value="y" id="is_referral_matching" class="form-check-input" @if($view->benefit_rules['referral_matching'] == 'y') checked @endif>
+                                    <label class="form-check-label me-3" for="is_referral_matching">활성</label>
+                                    <input type="radio" name="benefit_rules[referral_matching]" value="n" id="is_not_referral_matching" class="form-check-input" @if($view->benefit_rules['referral_matching'] == 'n') checked @endif>
+                                    <label class="form-check-label" for="is_not_referral_matching">비활성</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center align-middle">레벨 보너스</th>
+                                <td class="align-middle">
+                                    <input type="radio" name="benefit_rules[level_bonus]" value="y" id="is_level_bonus" class="form-check-input" @if($view->benefit_rules['level_bonus'] == 'y') checked @endif>
+                                    <label class="form-check-label me-3" for="is_level_bonus">활성</label>
+                                    <input type="radio" name="benefit_rules[level_bonus]" value="n" id="is_not_level_bonus" class="form-check-input" @if($view->benefit_rules['level_bonus'] == 'n') checked @endif>
+                                    <label class="form-check-label" for="is_not_level_bonus">비활성</label>
+                                </td>
+                                <th class="text-center align-middle">레벨 매칭</th>
+                                <td class="align-middle">
+                                    <input type="radio" name="benefit_rules[level_matching]" value="y" id="is_level_matching" class="form-check-input" @if($view->benefit_rules['level_matching'] == 'y') checked @endif>
+                                    <label class="form-check-label me-3" for="is_level_matching">활성</label>
+                                    <input type="radio" name="benefit_rules[level_matching]" value="n" id="is_not_level_matching" class="form-check-input" @if($view->benefit_rules['level_matching'] == 'n') checked @endif>
+                                    <label class="form-check-label" for="is_not_level_matching">비활성</label>
                                 </td>
                             </tr>
                             <tr>

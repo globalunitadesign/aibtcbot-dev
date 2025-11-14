@@ -24,12 +24,14 @@ class MiningPolicy extends Model
         'reward_limit',
         'split_period',
         'waiting_period',
+        'benefit_rules',
     ];
 
     protected $casts = [
         'instant_rate' => 'decimal:9',
 	    'split_rate' => 'decimal:9',
 	    'exchange_rate' => 'decimal:9',
+        'benefit_rules' => 'array',
         'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
@@ -97,6 +99,7 @@ class MiningPolicy extends Model
         'node_limit' => '최대 노드 수량',
         'split_period' => '분할기간',
         'waiting_period' => '대기기간',
+        'benefit_rules' => '혜택 규칙',
     ];
 
     public function getColumnComment($column)

@@ -20,20 +20,6 @@
                         </colgroup>
                         <tbody>
                             <tr>
-                                <th class="text-center align-middle">마케팅</th>
-                                <td class="align-middle" colspan="3">
-                                    <div class="d-flex ms-3">
-                                        <select name="marketing_id" id="marketingSelect" class="form-select w-25">
-                                            <option value="">마케팅 선택</option>
-                                            @foreach ($marketings as $marketing)
-                                                <option value="{{ $marketing->id }}">{{ $marketing->marketing_locale_name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <div class="d-flex align-items-center ms-2" id="benefitRules"></div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
                                 <th class="text-center align-middle">참여 코인</th>
                                 <td class="align-middle">
                                     <select name="coin_id" class="form-select w-50">
@@ -121,6 +107,38 @@
                                             {{ $label }}
                                         </label>
                                     @endforeach
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center align-middle">추천 보너스</th>
+                                <td class="align-middle">
+                                    <input type="radio" name="benefit_rules[referral_bonus]" id="is_referral_bonus" value="y" class="form-check-input">
+                                    <label class="form-check-label me-3" for="is_referral_bonus">활성</label>
+                                    <input type="radio" name="benefit_rules[referral_bonus]" id="is_not_referral_bonus" value="n" class="form-check-input">
+                                    <label class="form-check-label" for="is_not_referral_bonus">비활성</label>
+                                </td>
+                                <th class="text-center align-middle">추천 매칭</th>
+                                <td class="align-middle">
+                                    <input type="radio" name="benefit_rules[referral_matching]" value="y" id="is_referral_matching" class="form-check-input">
+                                    <label class="form-check-label me-3" for="is_referral_matching">활성</label>
+                                    <input type="radio" name="benefit_rules[referral_matching]" value="n" id="is_not_referral_matching" class="form-check-input">
+                                    <label class="form-check-label" for="is_not_referral_matching">비활성</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center align-middle">레벨 보너스</th>
+                                <td class="align-middle">
+                                    <input type="radio" name="benefit_rules[level_bonus]" value="y" id="is_level_bonus" class="form-check-input">
+                                    <label class="form-check-label me-3" for="is_level_bonus">활성</label>
+                                    <input type="radio" name="benefit_rules[level_bonus]" value="n" id="is_not_level_bonus" class="form-check-input">
+                                    <label class="form-check-label" for="is_not_level_bonus">비활성</label>
+                                </td>
+                                <th class="text-center align-middle">레벨 매칭</th>
+                                <td class="align-middle">
+                                    <input type="radio" name="benefit_rules[level_matching]" value="y" id="is_level_matching" class="form-check-input">
+                                    <label class="form-check-label me-3" for="is_level_matching">활성</label>
+                                    <input type="radio" name="benefit_rules[level_matching]" value="n" id="is_not_level_matching" class="form-check-input">
+                                    <label class="form-check-label" for="is_not_level_matching">비활성</label>
                                 </td>
                             </tr>
                         </tbody>
