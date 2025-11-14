@@ -37,7 +37,7 @@
                                     <input type="text" name="name" value="{{ $view->name }}" class="form-control">
                                 </td>
                                 <th class="text-center align-middle">아이디</th>
-                                <td class="align-middle">{{ $view->account }}</td>
+                                <td class="align-middle">{{ $view->member->user->account }}</td>
                             </tr>
                             <tr>
                                 <th class="text-center align-middle">이메일</th>

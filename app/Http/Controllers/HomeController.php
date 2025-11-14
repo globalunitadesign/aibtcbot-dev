@@ -61,11 +61,9 @@ class HomeController extends Controller
             }
         }
 
-        $marketings = Marketing::all();
-
         $popups = Post::where('is_popup', 'y')->get();
 
-        return view('home', compact('notice', 'assets', 'incomes', 'avatar_data', 'marketings', 'popups'));
+        return view('home', compact('notice', 'assets', 'incomes', 'avatar_data', 'popups'));
     }
 
 }
