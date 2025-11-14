@@ -173,7 +173,7 @@ class AssetTransfer extends Model
             ]);
 
             Log::channel('asset')->info('Deposited amount reflected to user asset balance', [
-                'user_id' => $asset->user_id,
+                'mebmer_id' => $asset->member_id,
                 'transfer_id' => $this->id,
                 'balance' => $amount,
                 'before_balance' => $before_balance,
