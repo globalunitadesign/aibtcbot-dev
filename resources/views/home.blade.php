@@ -279,7 +279,7 @@
             <h5 class="text-white pb-4">Bitcoin is an innovative payment <br> network and  a new kind of money.</h5>
         </div>
         <video class="bg-video__content" autoplay="" muted="" loop="" playsinline="">
-            <source src="{{ asset('images/bit_footer_video.mp4') }}" type="video/mp4" />
+            <source src="{{ asset('images/bit_video_bottom.mp4') }}" type="video/mp4" />
         </video>
     </div>
 </main>
