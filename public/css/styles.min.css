@@ -5549,7 +5549,7 @@ textarea.form-control-lg {
 }
 
 .card.maincard:has(.nav-asset.active) {
-  background: linear-gradient(to right, #F7931A, #cb6f00);
+  background: linear-gradient(to right, #FF7E00, #cb6f00);
 }
 
 .card.maincard:has(.nav-wallet.active) {
