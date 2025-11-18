@@ -271,9 +271,11 @@
         </div>
     </div> -->
     <div class="position-relative width100_div" style="height: auto; margin-bottom: 100px;">
-        <div class="position-absolute w-100 text-center">
-            <!-- <h5 class="text-white pt-5 opacity-50">Building Decentralized</h5> -->
+        <div class="position-absolute w-100 text-center video_img">
             <img src="{{ asset('images/logos/bit_simbol.png') }}" class="d-block w-25" alt="...">
+        </div>
+        <div class="position-absolute w-100 text-center video_text">
+            <!-- <h5 class="text-white pt-5 opacity-50">Building Decentralized</h5> -->
             <h5 class="text-white pb-4">Bitcoin is an innovative payment <br> network and  a new kind of money.</h5>
         </div>
         <video class="bg-video__content" autoplay="" muted="" loop="" playsinline="">
