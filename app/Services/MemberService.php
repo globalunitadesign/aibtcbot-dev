@@ -106,6 +106,64 @@ class MemberService
 
     /**
      *
+     * @param int $target_id
+     * @param int $max_level
+     * @return array
+     */
+    public function getParentTree(int $target_id, int $max_level = 20)
+    {
+        $target = Member::find($target_id);
+        if (!$target) {
+            throw new \Exception("Target member not found");
+        }
+
+        $root_id = 5000011;
+
+        $tree = $this->buildMemberTree($root_id);
+
+        $parents = [];
+        $this->findParentsInTree($tree, $target_id, $parents);
+
+        return array_slice($parents, 0, $max_level, true);
+    }
+
+    /**
+     *
+     * @param int $root_id
+     * @param int $max_level
+     * @return array
+     */
+    public function getChildrenTree(int $root_id, int $max_level = 20)
+    {
+        $tree = $this->buildMemberTree($root_id);
+
+        $levels = [];
+        $queue = [$tree];
+        $level = 1;
+
+        while (!empty($queue) && $level <= $max_level) {
+            $nextQueue = [];
+            $currentLevelMembers = [];
+
+            foreach ($queue as $node) {
+                foreach ($node['children'] as $child) {
+                    $currentLevelMembers[] = $child['member'];
+                    $nextQueue[] = $child;
+                }
+            }
+
+            if (empty($currentLevelMembers)) break;
+
+            $levels[$level] = collect($currentLevelMembers);
+            $queue = $nextQueue;
+            $level++;
+        }
+
+        return $levels;
+    }
+
+    /**
+     *
      * @param int $root_id
      * @return array
      */
@@ -119,9 +177,7 @@ class MemberService
 
         $tree = [
             'id' => $member->id,
-            'parent_id' => $member->parent_id,
-            'position' => $member->position,
-            'level' => $member->level,
+            'member' => $member,
             'children' => [],
         ];
 
@@ -148,16 +204,16 @@ class MemberService
             $right = null;
 
             foreach ($current['children'] as $child) {
-                if ($child['position'] === 'left') $left = $child;
-                if ($child['position'] === 'right') $right = $child;
+                if ($child['member']->position === 'left') $left = $child;
+                if ($child['member']->position === 'right') $right = $child;
             }
 
             if (!$left) {
-                return ['parent_id' => $current['id'], 'position' => 'left', 'level' => $current['level'] + 1];
+                return ['parent_id' => $current['id'], 'position' => 'left', 'level' => $current['member']->level + 1];
             }
 
             if (!$right) {
-                return ['parent_id' => $current['id'], 'position' => 'right', 'level' => $current['level'] + 1];
+                return ['parent_id' => $current['id'], 'position' => 'right', 'level' => $current['member']->level + 1];
             }
 
             foreach ($current['children'] as $child) {
@@ -182,6 +238,27 @@ class MemberService
 
         foreach ($tree['children'] as $child) {
             if ($this->searchTree($child, $target_id)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function findParentsInTree($node, $target_id, &$parents, $path = [])
+    {
+        $path[] = $node['member'];
+
+        if ($node['id'] == $target_id) {
+            for ($i = 0; $i < count($path) - 1; $i++) {
+                $parents[$i + 1] = $path[$i];
+            }
+
+            return true;
+        }
+
+        foreach ($node['children'] as $child) {
+            if ($this->findParentsInTree($child, $target_id, $parents, $path)) {
                 return true;
             }
         }

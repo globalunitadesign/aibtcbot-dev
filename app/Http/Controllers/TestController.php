@@ -44,14 +44,14 @@ class TestController extends Controller
         $root = User::find(1000011);
         $avatar = $service->addAvatar($root);
         */
-/*
+
         $policies = MiningPolicy::all();
 
         foreach ($policies as $policy) {
             $policy->setDailyStat();
         }
-*/
-        //Mining::storeMiningReward();
+
+        Mining::storeMiningReward();
         MiningReward::distributeProfit();
         Mining::finalizePayout();
 

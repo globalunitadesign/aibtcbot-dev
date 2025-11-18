@@ -110,6 +110,25 @@
                                 </td>
                             </tr>
                             <tr>
+                                <th class="text-center align-middle">아바타 생성 금액</th>
+                                <td class="align-middle d-flex">
+                                    <input type="text" name="avatar_cost" class="form-control w-25">
+                                    <div class="px-2 d-flex align-items-center">(선택한 수익 코인)</div>
+                                </td>
+                                <th class="text-center align-middle">아바타 생성 개수</th>
+                                <td class="align-middle d-flex">
+                                    <input type="text" name="avatar_count" class="form-control w-25">
+                                    <div class="px-2 d-flex align-items-center">개</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center align-middle">아바타 생성 누적 금액</th>
+                                <td class="align-middle d-flex" colspan="3">
+                                    <input type="text" name="avatar_target_amount" class="form-control w-25">
+                                    <div class="px-2 d-flex align-items-center">(선택한 수익 코인)</div>
+                                </td>
+                            </tr>
+                            <tr>
                                 <th class="text-center align-middle">추천 보너스</th>
                                 <td class="align-middle">
                                     <input type="radio" name="benefit_rules[referral_bonus]" id="is_referral_bonus" value="y" class="form-check-input">

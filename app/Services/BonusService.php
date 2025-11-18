@@ -7,15 +7,13 @@ use App\Models\IncomeTransfer;
 use App\Models\LevelBonus;
 use App\Models\LevelMatching;
 use App\Models\LevelPolicy;
-use App\Models\Member;
 use App\Models\RankBonus;
 use App\Models\RankPolicy;
 use App\Models\ReferralBonus;
 use App\Models\ReferralMatching;
 use App\Models\ReferralMatchingPolicy;
 use App\Models\ReferralPolicy;
-use App\Models\User;
-use App\Models\Avatar;
+use App\Services\IncomeProcessService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -76,7 +74,8 @@ class BonusService
                     'bonus' => $bonus,
                 ]);
 
-                $income->increment('balance', $bonus);
+                $service = new IncomeProcessService();
+                $service->addProfitAndProcess($income, $mining->policy, $bonus);
 
                 Log::channel('bonus')->info('Success referral bonus', [
                     'member_id' => $parent->id,
@@ -157,7 +156,8 @@ class BonusService
                 'matching' => $matching,
             ]);
 
-            $income->increment('balance', $matching);
+            $service = new IncomeProcessService();
+            $service->addProfitAndProcess($income, $bonus->mining->policy, $matching);
 
             Log::channel('bonus')->info('Success referral matching', [
                 'member_id' => $parent->id,
@@ -367,7 +367,8 @@ class BonusService
                     'bonus' => $bonus,
                 ]);
 
-                $income->increment('balance', $bonus);
+                $service = new IncomeProcessService();
+                $service->addProfitAndProcess($income, $mining->policy, $bonus);
 
                 Log::channel('bonus')->info('Success level bonus', [
                     'member_id' => $parent->id,
@@ -478,7 +479,8 @@ class BonusService
                 'matching' => $matching,
             ]);
 
-            $income->increment('balance', $matching);
+            $service = new IncomeProcessService();
+            $service->addProfitAndProcess($income, $mining->policy, $matching);
 
             Log::channel('bonus')->info('Success level matching', [
                 'member_id' => $parent->id,

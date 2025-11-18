@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\BonusService;
+use App\Services\IncomeProcessService;
 use App\Traits\TruncatesDecimals;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -121,7 +122,7 @@ class MiningReward extends Model
                 $income = $reward->mining->income;
 
                 $transfer = IncomeTransfer::create([
-                    'user_id' => $reward->user_id,
+                    'member_id' => $income->member_id,
                     'income_id' => $income->id,
                     'type' => 'mining_profit',
                     'status' => 'completed',
@@ -131,7 +132,8 @@ class MiningReward extends Model
                     'after_balance' => $income->balance + $profit,
                 ]);
 
-                $income->increment('balance', $profit);
+                $service = new IncomeProcessService();
+                $service->addProfitAndProcess($income, $reward->mining->policy, $profit);
 
                 $mining_profit = MiningProfit::create([
                     'user_id' => $reward->user_id,

@@ -24,6 +24,9 @@ class MiningPolicy extends Model
         'reward_limit',
         'split_period',
         'waiting_period',
+        'avatar_cost',
+        'avatar_count',
+        'avatar_target_amount',
         'benefit_rules',
     ];
 
@@ -99,6 +102,9 @@ class MiningPolicy extends Model
         'node_limit' => '최대 노드 수량',
         'split_period' => '분할기간',
         'waiting_period' => '대기기간',
+        'avatar_cost' => '아바타 생성 비용',
+        'avatar_count' => '아바타 생성 개수',
+        'avatar_target_amount' => '아바타 생성 누적 금액',
         'benefit_rules' => '혜택 규칙',
     ];
 
