@@ -270,7 +270,7 @@
             --}}
         </div>
     </div> -->
-    <div class="position-relative" style="height: auto; margin-bottom: 100px;">
+    <div class="position-relative width100_div" style="height: auto; margin-bottom: 100px;">
         <div class="position-absolute w-100 text-center">
             <h5 class="text-white pt-5 opacity-50">Building Decentralized</h5>
             <h3 class="text-white pb-4">Innovation<br>Together</h3>

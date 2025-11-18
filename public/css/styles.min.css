@@ -17435,3 +17435,11 @@ ul {
     touch-action: none;
     cursor: crosshair;
 }
+
+
+/*custom-ho*/
+.width100_div{/*parent not padding width100*/
+    margin-left: calc(-1 * 3rem);
+    margin-right: calc(-1 * 3rem);
+    width: calc(100% + 6rem);
+}
