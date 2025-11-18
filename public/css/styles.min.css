@@ -17446,6 +17446,7 @@ ul {
 .width100_div > div{z-index:1;bottom: 0;}
 .width100_div > div > img{
   text-align: center;
+  margin: 0 auto;
 }
 .width100_div .bg-video__content{
   filter: invert(18%) sepia(2%) saturate(0%) hue-rotate(338deg) brightness(99%) contrast(92%);
