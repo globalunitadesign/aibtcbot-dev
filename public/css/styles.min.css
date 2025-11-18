@@ -3915,11 +3915,11 @@ textarea.form-control-lg {
 }
 
 .btn-header {
-  background: linear-gradient(to right, #5769ff, #363bf5);
+  background: linear-gradient(to right, #ffab8b, #f7931a);
 }
 
 .btn-components {
-  background: linear-gradient(to right, #5769ff, #363bf5);
+  background: linear-gradient(to right, #ffab8b, #f7931a);
 }
 
 .btn-outline-primary {
