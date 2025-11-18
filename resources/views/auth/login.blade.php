@@ -10,7 +10,7 @@
                         <div class="card-body">
                             <div class="text-center mb-3">
                                 <h1 class="text-white">
-                                    <img src="{{ asset('/images/logos/logo_w.png') }}" alt="" class="login-logo" style="height: 30px; width: auto;">
+                                    <img src="{{ asset('/images/logos/logo_bit_w.svg') }}" alt="" class="login-logo" style="height: 30px; width: auto;">
                                 </h1>
                             </div>
                             <form method="POST" id="ajaxForm" action="{{ route('login') }}">
