@@ -6,7 +6,7 @@
         <div class="d-flex align-items-center justify-content-center w-100 z-1 my-4">
             <div class="row justify-content-center w-100">
                 <div class="col-11 px-2">
-                    <div class="card mb-0" style="background: rgba(117,142,255,0.2); backdrop-filter: blur(2px);">
+                    <div class="card mb-0" style="background: rgba(215,190,181,0.4); backdrop-filter: blur(2px);">
                         <div class="card-body">
                             <div class="text-center mb-3">
                                 <h1 class="text-white">
