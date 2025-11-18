@@ -273,7 +273,7 @@
     <div class="position-relative width100_div" style="height: auto; margin-bottom: 100px;">
         <div class="position-absolute w-100 text-center">
             <h5 class="text-white pt-5 opacity-50">Building Decentralized</h5>
-            <h3 class="text-white pb-4">Innovation<br>Together</h3>
+            <h3 class="text-white pb-4">Bitcoin is an innovative payment network and a new kind of money.</h3>
         </div>
         <video class="bg-video__content" autoplay="" muted="" loop="" playsinline="">
             <source src="{{ asset('images/bit_footer_video.mp4') }}" type="video/mp4" />
