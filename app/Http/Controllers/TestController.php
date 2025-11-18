@@ -51,9 +51,9 @@ class TestController extends Controller
             $policy->setDailyStat();
         }
 */
-        Mining::storeMiningReward();
-        //MiningReward::distributeProfit();
-        //Mining::finalizePayout();
+        //Mining::storeMiningReward();
+        MiningReward::distributeProfit();
+        Mining::finalizePayout();
 
     }
 }
