@@ -17444,16 +17444,4 @@ ul {
     width: calc(100% + 6rem);
 }
 .width100_div > div{z-index:1;}
-.width100_div > div.video_img{
-  top: 50%;
-  left:50%;
-  transform: translate(-50%, -50%);
-}
-.width100_div > div.video_img > img{
-  text-align: center;
-  margin: 0 auto;
-}
 .width100_div > div.video_text{bottom: 0;}
-.width100_div .bg-video__content{
-  filter: invert(18%) sepia(2%) saturate(0%) hue-rotate(338deg) brightness(99%) contrast(92%);
-}
