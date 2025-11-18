@@ -23,4 +23,11 @@ QORA sẽ không chịu bất kỳ trách nhiệm nào đối với các lỗi n
   'connect_unlinked' => 'Chưa liên kết',
   'connect_linked' => 'Đã liên kết',
   'dashboard' => 'Dashboard',
+  'avatar' => 'Avatar',
+  'main_account' => 'Tài khoản chính',
+  'avatar_account' => 'Tài khoản avatar',
+  'avatar_guide_1' => 'Nhập UID người giới thiệu và nhấn nút Kích hoạt để kích hoạt tài khoản avatar.',
+  'avatar_guide_2' => 'UID người giới thiệu phải là UID tuyến dưới của tài khoản chính.',
+  'avatar_guide_3' => 'UID đã nhập sẽ không thể sửa, vui lòng kiểm tra chính xác.',
+  'avatar_active_notice' => 'Avatar đã được kích hoạt.',
 );

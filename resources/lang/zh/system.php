@@ -52,4 +52,7 @@ return array (
   'maturity_at' => '返还日期',
   'instant' => '立即',
   'split' => '分期',
+  'active' => '激活',
+  'inactive' => '未激活',
+  'notice_label' => '提示信息',
 );

@@ -24,4 +24,5 @@ return array (
   'required_mining_notice' => '请先参与必须产品。',
   'max_mining_amount_notice' => '您已超过最多数量。',
   'reward_count' => '收益产生次数',
+  'participation_amount' => '参与商品金额',
 );

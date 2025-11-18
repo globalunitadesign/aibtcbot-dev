@@ -24,4 +24,5 @@ return array (
   'required_mining_notice' => '필수 상품에 가입해 주세요.',
   'max_mining_amount_notice' => '최대 참여 수량을 초과하였습니다.',
   'reward_count' => '수익 발생 횟수',
+  'participation_amount' => '상품 참여금액',
 );

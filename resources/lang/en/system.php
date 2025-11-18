@@ -51,4 +51,7 @@ return array (
   'maturity_at' => 'Repayment Date',
   'instant' => 'Right now',
   'split' => 'Installment',
+  'active' => 'Activate',
+  'inactive' => 'Inactivate',
+  'notice_label' => 'Notices',
 );
