@@ -1,7 +1,7 @@
 <footer class="footerContainer container px-0 fixed-bottom bg-white border-start border-end border-start-sm-0 border-end-sm-0 border-top">
     <div class="container">
         <div class="row text-center py-3">
-           @if(auth()->user()->profile->is_referral == 'y')
+           @if(auth()->user()->member->is_referral == 'y')
             <div class="col px-1 ">
                 <a href="{{ route('register',['mid' => Auth::user()->id]) }}" class="text-decoration-none text-dark">
                     <img src="{{ asset('/images/icon/icon_menu_register.svg') }}" class="pb-1">
