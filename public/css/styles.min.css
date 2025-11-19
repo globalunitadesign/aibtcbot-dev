@@ -5572,7 +5572,7 @@ textarea.form-control-lg {
 }
 
 .card.maincard:has(.nav-wallet.active) {
-  background: linear-gradient(to right, #9c88ff, #6a32f5);
+  background: linear-gradient(to right, #FAB4B1, #D2574F);
 }
 
 .accordion {
