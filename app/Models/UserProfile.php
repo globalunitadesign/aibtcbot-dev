@@ -24,11 +24,6 @@ class UserProfile extends Model
         'memo'
     ];
 
-    protected $appends = [
-        'referral_count',
-        'is_referral',
-    ];
-
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
