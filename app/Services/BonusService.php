@@ -39,7 +39,7 @@ class BonusService
 
                 if ($parent->is_valid === 'n') continue;
 
-                if (!$parent->getHasMining($mining->policy_id)) continue;
+                if (!$parent->getHasMining()) continue;
 
                 $policy = ReferralPolicy::where('mining_policy_id', $mining->policy_id)
                     ->where('grade_id', $parent->grade->id)
@@ -119,7 +119,9 @@ class BonusService
 
         foreach ($parents as $level => $parent) {
 
-            if (!$parent->getHasMining($bonus->mining->policy_id)) continue;
+            if ($parent->is_valid === 'n') continue;
+
+            if (!$parent->getHasMining()) continue;
 
             $policy = ReferralMatchingPolicy::where('mining_policy_id', $bonus->mining->policy_id)
                 ->where('grade_id', $parent->grade->id)
@@ -306,7 +308,7 @@ class BonusService
 
                 if ($parent->is_valid === 'n') continue;
 
-                if (!$parent->getHasMining($mining->policy_id)) continue;
+                if (!$parent->getHasMining()) continue;
 
                 $condition = $parent->checkLevelCondition($mining_policy_id);
 
@@ -424,7 +426,7 @@ class BonusService
 
             if ($parent->is_valid === 'n') continue;
 
-            if (!$parent->getHasMining($mining_policy_id)) continue;
+            if (!$parent->getHasMining()) continue;
 
             $condition = $parent->checkLevelCondition($mining_policy_id);
 

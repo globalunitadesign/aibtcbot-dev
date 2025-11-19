@@ -108,6 +108,12 @@ class Member extends Authenticatable
         return $is_valid;
     }
 
+    public function getHasMining()
+    {
+        return Mining::where('user_id', $this->user_id)
+            ->exists();
+    }
+
     public function getParentTree($max_level = 20)
     {
         $levels = [];
