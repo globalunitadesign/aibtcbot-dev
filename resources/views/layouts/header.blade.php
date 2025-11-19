@@ -112,7 +112,7 @@
         <div class="d-flex justify-content-between align-items-center w-100">
             @if( !Request::is('home') )
             <a href="{{ url()->previous() }}" class="navbar-brand fs-6 nav-link text-inverse m-0 d-flex justify-content-center align-items-center" style="width: 54px;">
-                <i class="ti ti-chevron-left fs-7"></i>
+                <i class="ti ti-chevron-left fs-7" style="filter: hue-rotate(100deg);"></i>
             </a>
             @else
             <div style="width: 54px;"></div>
