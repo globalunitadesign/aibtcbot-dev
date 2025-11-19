@@ -22,4 +22,11 @@ return array (
   'connect_unlinked' => '미연동',
   'connect_linked' => '연동',
   'dashboard' => '대시보드',
+  'avatar' => '아바타',
+  'main_account' => '메인계정',
+  'avatar_account' => '아바타계정',
+  'avatar_guide_1' => '추천인 UID를 입력 후, 활성 버튼을 누르면 아바타 계정이 활성화 됩니다.',
+  'avatar_guide_2' => '추천인 UID는 꼭 메인계정 산하에 위치한 UID를 입력해야 합니다.',
+  'avatar_guide_3' => 'UID 오입력 시 수정이 불가하오니, 정확히 입력하시기 바랍니다.',
+  'avatar_active_notice' => '아바타가 활성되었습니다.',
 );

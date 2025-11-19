@@ -17,7 +17,6 @@ use App\Models\AssetTransfer;
 use App\Models\Income;
 use App\Models\IncomeTransfer;
 use App\Models\ReferralMatchingPolicy;
-use App\Models\Staking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -39,10 +38,6 @@ class TestController extends Controller
    public function index()
     {
 
-        $service = new MemberService();
-
-        $root = User::find(1000011);
-        $avatar = $service->addAvatar($root);
 
     }
 }

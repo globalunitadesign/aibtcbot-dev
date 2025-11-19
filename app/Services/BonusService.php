@@ -7,15 +7,13 @@ use App\Models\IncomeTransfer;
 use App\Models\LevelBonus;
 use App\Models\LevelMatching;
 use App\Models\LevelPolicy;
-use App\Models\Member;
 use App\Models\RankBonus;
 use App\Models\RankPolicy;
 use App\Models\ReferralBonus;
 use App\Models\ReferralMatching;
 use App\Models\ReferralMatchingPolicy;
 use App\Models\ReferralPolicy;
-use App\Models\User;
-use App\Models\Avatar;
+use App\Services\IncomeProcessService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -41,7 +39,7 @@ class BonusService
 
                 if ($parent->is_valid === 'n') continue;
 
-                if (!$parent->getHasMining($mining->policy_id)) continue;
+                if (!$parent->getHasMining()) continue;
 
                 $policy = ReferralPolicy::where('mining_policy_id', $mining->policy_id)
                     ->where('grade_id', $parent->grade->id)
@@ -76,7 +74,8 @@ class BonusService
                     'bonus' => $bonus,
                 ]);
 
-                $income->increment('balance', $bonus);
+                $service = new IncomeProcessService();
+                $service->addProfitAndProcess($income, $mining->policy, $bonus);
 
                 Log::channel('bonus')->info('Success referral bonus', [
                     'member_id' => $parent->id,
@@ -120,7 +119,9 @@ class BonusService
 
         foreach ($parents as $level => $parent) {
 
-            if (!$parent->getHasMining($bonus->mining->policy_id)) continue;
+            if ($parent->is_valid === 'n') continue;
+
+            if (!$parent->getHasMining()) continue;
 
             $policy = ReferralMatchingPolicy::where('mining_policy_id', $bonus->mining->policy_id)
                 ->where('grade_id', $parent->grade->id)
@@ -157,7 +158,8 @@ class BonusService
                 'matching' => $matching,
             ]);
 
-            $income->increment('balance', $matching);
+            $service = new IncomeProcessService();
+            $service->addProfitAndProcess($income, $bonus->mining->policy, $matching);
 
             Log::channel('bonus')->info('Success referral matching', [
                 'member_id' => $parent->id,
@@ -306,7 +308,7 @@ class BonusService
 
                 if ($parent->is_valid === 'n') continue;
 
-                if (!$parent->getHasMining($mining->policy_id)) continue;
+                if (!$parent->getHasMining()) continue;
 
                 $condition = $parent->checkLevelCondition($mining_policy_id);
 
@@ -367,7 +369,8 @@ class BonusService
                     'bonus' => $bonus,
                 ]);
 
-                $income->increment('balance', $bonus);
+                $service = new IncomeProcessService();
+                $service->addProfitAndProcess($income, $mining->policy, $bonus);
 
                 Log::channel('bonus')->info('Success level bonus', [
                     'member_id' => $parent->id,
@@ -423,7 +426,7 @@ class BonusService
 
             if ($parent->is_valid === 'n') continue;
 
-            if (!$parent->getHasMining($mining_policy_id)) continue;
+            if (!$parent->getHasMining()) continue;
 
             $condition = $parent->checkLevelCondition($mining_policy_id);
 
@@ -478,7 +481,8 @@ class BonusService
                 'matching' => $matching,
             ]);
 
-            $income->increment('balance', $matching);
+            $service = new IncomeProcessService();
+            $service->addProfitAndProcess($income, $mining->policy, $matching);
 
             Log::channel('bonus')->info('Success level matching', [
                 'member_id' => $parent->id,

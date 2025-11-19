@@ -21,4 +21,11 @@ return array (
   'connect_unlinked' => '未绑定',
   'connect_linked' => '绑定',
   'dashboard' => 'Dashboard',
+  'avatar' => 'avatar',
+  'main_account' => '主账号',
+  'avatar_account' => 'avatar账号',
+  'avatar_guide_1' => '输入推荐人UID，点击“激活”键，即可激活avatar账号。',
+  'avatar_guide_2' => '推荐人UID定要输入，位于主账号伞下的UID。',
+  'avatar_guide_3' => 'UID 输入错误后将无法修改，请务必准确填写。',
+  'avatar_active_notice' => '成功激活avatar账号。',
 );

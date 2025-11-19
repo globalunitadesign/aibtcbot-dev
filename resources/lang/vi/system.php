@@ -51,4 +51,7 @@ return array (
   'maturity_at' => 'Ngày thanh toán',
   'instant' => 'Trả',
   'split' => 'Trả',
+  'active' => 'Kích hoạt',
+  'inactive' => 'Vô hiệu hóa',
+  'notice_label' => 'Thông báo',
 );

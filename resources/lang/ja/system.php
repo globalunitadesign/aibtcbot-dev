@@ -51,4 +51,7 @@ return array (
   'maturity_at' => '返済日',
   'instant' => 'すぐに',
   'split' => '分割',
+  'active' => '活性',
+  'inactive' => '非活性',
+  'notice_label' => 'お知らせ',
 );

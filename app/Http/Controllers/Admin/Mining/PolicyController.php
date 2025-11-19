@@ -63,11 +63,28 @@ class PolicyController extends Controller
                     ->select('admins.name', 'policy_modify_logs.*')
                     ->where('policy_modify_logs.policy_type', 'mining_policies')
                     ->where('policy_modify_logs.policy_id', $request->id)
-                    ->whereNotIn('policy_modify_logs.column_name', ['exchange_rate', 'node_amount'])
+                    ->whereNotIn('policy_modify_logs.column_name', ['exchange_rate', 'node_amount', 'avatar_cost', 'avatar_count', 'avatar_target_amount'])
                     ->orderBy('policy_modify_logs.created_at', 'desc')
                     ->get();
 
                 return view('admin.mining.policy.view-policy', compact('coins', 'view', 'all_days', 'selected_days', 'modify_logs'));
+
+            case 'avatar' :
+
+                $view = MiningPolicy::find($request->id);
+
+                $selected_days = explode(',', $view->reward_days ?? '');
+
+                $modify_logs = PolicyModifyLog::join('mining_policies', 'mining_policies.id', '=', 'policy_modify_logs.policy_id')
+                    ->join('admins', 'admins.id', '=', 'policy_modify_logs.admin_id')
+                    ->select('admins.name', 'policy_modify_logs.*')
+                    ->where('policy_modify_logs.policy_type', 'mining_policies')
+                    ->where('policy_modify_logs.policy_id', $request->id)
+                    ->whereIn('policy_modify_logs.column_name', ['avatar_cost', 'avatar_count', 'avatar_target_amount'])
+                    ->orderBy('policy_modify_logs.created_at', 'desc')
+                    ->get();
+
+                return view('admin.mining.policy.view-avatar', compact('view', 'modify_logs'));
 
             default :
 
@@ -202,6 +219,21 @@ class PolicyController extends Controller
                             'message' => '채굴값이 변경되었습니다.',
                             'url' => route('admin.mining.policy.view', ['mode' => 'mining', 'id' => $mining_policy->id]),
                         ]);
+
+                    case 'avatar' :
+
+                        $mining_policy->update([
+                            'avatar_cost' => $request->avatar_cost,
+                            'avatar_count' => $request->avatar_count,
+                            'avatar_target_amount' => $request->avatar_target_amount,
+                        ]);
+
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => '아바타 설정이 변경되었습니다.',
+                            'url' => route('admin.mining.policy.view', ['mode' => 'avatar', 'id' => $mining_policy->id]),
+                        ]);
+
 
                     case 'translation' :
 

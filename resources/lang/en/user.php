@@ -21,4 +21,11 @@ return array (
   'connect_unlinked' => 'Not Integrated',
   'connect_linked' => 'Integrated',
   'dashboard' => 'Dashboard',
+  'avatar' => 'Avatar',
+  'main_account' => 'Main Account',
+  'avatar_account' => 'Avatar Account',
+  'avatar_guide_1' => 'Enter the referrer UID and click the Activate button to activate the avatar account.',
+  'avatar_guide_2' => 'The referrer UID must belong to a UID under the main account.',
+  'avatar_guide_3' => 'You cannot change the UID. Please check carefully.',
+  'avatar_active_notice' => 'The avatar has been activated.',
 );

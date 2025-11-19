@@ -24,4 +24,5 @@ return array (
   'required_mining_notice' => 'Vui lòng đăng ký sản phẩm bắt buộc.',
   'max_mining_amount_notice' => 'Bạn đã vượt quá số lần tham gia tối đa.',
   'reward_count' => 'Số lần phát sinh lợi nhuận',
+  'participation_amount' => 'Số tiền tham gia sản phẩm',
 );

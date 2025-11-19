@@ -51,4 +51,7 @@ return array (
   'maturity_at' => '상환일',
   'instant' => '즉시',
   'split' => '분할',
+  'active' => '활성',
+  'inactive' => '비활성',
+  'notice_label' => '안내사항',
 );

@@ -24,4 +24,5 @@ return array (
   'required_mining_notice' => '必須商品に加入してください。',
   'max_mining_amount_notice' => '最大参加数量を超えました。',
   'reward_count' => '収益発生回数',
+  'participation_amount' => '商品参加金額',
 );

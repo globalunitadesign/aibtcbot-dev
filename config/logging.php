@@ -134,6 +134,14 @@ return [
             'permission' => 0664,
         ],
 
+        'avatar' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/avatar/avatar.log'),
+            'level' => 'info',
+            'days' => 14,
+            'permission' => 0664,
+        ],
+
         'asset' => [
             'driver' => 'daily',
             'path' => storage_path('logs/asset/asset.log'),

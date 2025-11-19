@@ -87,7 +87,7 @@ class Member extends Authenticatable
 
     public function getReferralCountAttribute()
     {
-        return $this->children()->where('is_valid', 'y')->count();
+        return $this->referrals()->where('is_valid', 'y')->count();
     }
 
     public function getIsReferralAttribute()
@@ -106,6 +106,12 @@ class Member extends Authenticatable
         }
 
         return $is_valid;
+    }
+
+    public function getHasMining()
+    {
+        return Mining::where('user_id', $this->user_id)
+            ->exists();
     }
 
     public function getParentTree($max_level = 20)

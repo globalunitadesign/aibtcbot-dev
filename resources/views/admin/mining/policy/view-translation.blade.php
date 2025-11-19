@@ -15,6 +15,11 @@
                     </a>
                 </li>
                 <li class="nav-item" role="presentation">
+                    <a href="{{ route('admin.mining.policy.view', ['mode' => 'avatar', 'id' => $policy->id]) }}" class="nav-link @if(request('mode') == 'avatar') active @endif">
+                        아바타 설정
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
                     <a href="{{ route('admin.mining.policy.view', ['mode' => 'translation', 'id' => $policy->id]) }}" class="nav-link @if(request('mode') == 'translation') active @endif">
                         다국어 설정
                     </a>

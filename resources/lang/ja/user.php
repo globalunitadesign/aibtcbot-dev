@@ -23,4 +23,11 @@ return array (
   'connect_unlinked' => '未連携',
   'connect_linked' => '連携',
   'dashboard' => 'ダッシュボード',
+  'avatar' => 'アバター',
+  'main_account' => 'メインアカウント',
+  'avatar_account' => 'アバターアカウント',
+  'avatar_guide_1' => '推薦者のUIDを入力し、「有効化」ボタンを押すと、アバターアカウントが有効になります。',
+  'avatar_guide_2' => '推薦者のUIDは必ずメインアカウントに紐づくUIDを入力してください。',
+  'avatar_guide_3' => 'UIDを誤って入力した場合、修正できませんので、正確に入力してください。',
+  'avatar_active_notice' => 'アバターが有効化されました。',
 );

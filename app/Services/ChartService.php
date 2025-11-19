@@ -1,22 +1,30 @@
 <?php
 
-namespace App\Models;
+namespace App\Services;
 
 use App\Models\Member;
-use App\Models\User;
-use App\Models\Avatar;
 use App\Models\Asset;
 use App\Models\AssetTransfer;
-use Illuminate\Support\Facades\DB;
 
-class Chart
+class ChartService
 {
-    public $data = [];
-    public $mode;
-    public $is_admin = 0;
+    public array $data = [];
+    public ?string $mode = null;
+    public int $is_admin = 0;
 
+    public function setMode(string $mode): self
+    {
+        $this->mode = $mode;
+        return $this;
+    }
 
-    public function getChartData($member_id)
+    public function setIsAdmin(int $isAdmin): self
+    {
+        $this->is_admin = $isAdmin;
+        return $this;
+    }
+
+    public function getChartData(int $member_id): array
     {
         $root = Member::with('user', 'avatar', 'children')->find($member_id);
 
@@ -31,42 +39,39 @@ class Chart
         return $this->data;
     }
 
-
-    protected function addChildrenData(Member $parentMember)
+    protected function addChildrenData(Member $parentMember): void
     {
-
-        $children = $parentMember->children()->with('user', 'avatar', 'children')->get();
+        $children = $parentMember->children()
+            ->with('user', 'avatar', 'children')
+            ->get();
 
         if ($children->isEmpty()) return;
 
         foreach ($children as $child) {
             $this->data[] = $this->writeNodeData($child, $parentMember->id);
 
-            if ($this->mode == 'aff') {
+            if ($this->mode === 'aff') {
                 $this->addChildrenData($child);
             }
         }
     }
 
-
-    protected function writeNodeData(Member $member, $parent = null)
+    protected function writeNodeData(Member $member, $parent = null): array
     {
-        $userOrAvatar = $member->user ?? $member->avatar;
-
         if ($member->user) {
             $info = "<i>U{$member->user->id}</i> <br> <i>{$member->user->name}</i>";
-        } else if ($member->avatar) {
+        } elseif ($member->avatar) {
             $info = "<i>A{$member->avatar->id}</i> <br> <i>{$member->avatar->name}</i>";
         } else {
             $info = "Unknown <br>";
         }
 
+        /*
         if ($member->user) {
             $assets = Asset::where('member_id', $member->id)
                 ->whereHas('coin', fn($q) => $q->where('is_active', 'y'))
                 ->get();
 
-            /*
             foreach ($assets as $asset) {
                 $sales = AssetTransfer::where('asset_id', $asset->id)
                     ->whereIn('type', ['deposit', 'internal', 'manual_deposit'])
@@ -75,13 +80,13 @@ class Chart
 
                 $info .= "{$asset->coin->code}: {$sales} <br>";
             }
-            */
         }
+        */
 
         return [
-            'id' => strval($member->id),
-            'parent' => strval($parent),
-            'info' => $info,
+            'id'     => (string) $member->id,
+            'parent' => $parent ? (string) $parent : null,
+            'info'   => $info,
         ];
     }
 }
