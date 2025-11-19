@@ -50,10 +50,12 @@
                                         <button type="button" id="verifyCode" class="btn btn-primary rounded-end-3">{{ __('system.send') }}</button>
                                     </div>
                                 </div>
+                                {{-- 이메일 인증 무시
                                 <div class="mb-4">
                                     <label for="inputName" class="form-label required">{{ __('auth.verify_code') }}</label>
                                     <input type="text" name="code" class="form-control required" required>
                                 </div>
+                                --}}
                                 <div class="mb-4">
                                     <label for="inputReferrerId" class="form-label required">{{ __('user.recommender_uid') }}</label>
                                     <input type="text" name="referrerId" id="inputReferrerId" @if($mid)value="{{ $mid }}"@endif class="form-control required" required>
