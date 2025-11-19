@@ -125,7 +125,7 @@
                 </a>
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" style="width: 54px;">
-                <span class="navbar-toggler-icon" style="filter: brightness(160%);"></span>
+                <span class="navbar-toggler-icon" style="filter: hue-rotate(100deg);"></span>
             </button>
         </div>
     </div>
