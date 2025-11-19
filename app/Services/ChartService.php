@@ -58,12 +58,22 @@ class ChartService
 
     protected function writeNodeData(Member $member, $parent = null): array
     {
+        $info = "{$member->id} <br>";
+
         if ($member->user) {
-            $info = "<i>U{$member->user->id}</i> <br> <i>{$member->user->name}</i>";
+            $info .= "U{$member->user->id} <br> {$member->user->name}";
         } elseif ($member->avatar) {
-            $info = "<i>A{$member->avatar->id}</i> <br> <i>{$member->avatar->name}</i>";
+            $info .= "A{$member->avatar->id} <br> {$member->avatar->name}";
         } else {
-            $info = "Unknown <br>";
+            $info .= "Unknown <br>";
+        }
+
+        if ($member->referrer) {
+            if ($member->referrer->user) {
+                $info .= "<br> 추천인 : U{$member->referrer->user->id}";
+            } else {
+                $info .= "<br> 추천인 : A{$member->referrer->avatar->id}";
+            }
         }
 
         /*
