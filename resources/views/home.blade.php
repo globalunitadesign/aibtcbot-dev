@@ -83,14 +83,14 @@
             <nav>
                 <div class="nav justify-content-center" id="nav-tab" role="tablist">
                     <button class="nav-link nav-asset active ps-3 pe-3" id="nav-asset-tab" data-bs-toggle="tab" data-bs-target="#nav-asset" type="button" role="tab" aria-controls="nav-asset" aria-selected="true">
-                        <h5 class="link-card-tab fs-6 my-3">{{ __('asset.assets_held') }}</h5>
+                        <h5 class="link-card-tab fs-5 my-3">{{ __('asset.assets_held') }}</h5>
                     </button>
                     <button class="nav-link nav-wallet ps-3 pe-3 position-relative divider-w" id="nav-wallet-tab" data-bs-toggle="tab" data-bs-target="#nav-wallet" type="button" role="tab" aria-controls="nav-wallet" aria-selected="false">
-                        <h5 class="link-card-tab fs-6 my-3">{{ __('asset.income_wallet') }}</h5>
+                        <h5 class="link-card-tab fs-5 my-3">{{ __('asset.income_wallet') }}</h5>
                     </button>
                     @if($avatar_data->isNotEmpty())
                     <button class="nav-link nav-wallet ps-3 pe-3 position-relative divider-w" id="nav-avatar-tab" data-bs-toggle="tab" data-bs-target="#nav-avatar" type="button" role="tab" aria-controls="nav-avatar" aria-selected="false">
-                        <h5 class="link-card-tab fs-6 my-3">{{ __('user.avatar') }}</h5>
+                        <h5 class="link-card-tab fs-5 my-3">{{ __('user.avatar') }}</h5>
                     </button>
                     @endif
                 </div>
