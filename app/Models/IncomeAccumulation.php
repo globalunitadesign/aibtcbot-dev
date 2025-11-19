@@ -10,6 +10,7 @@ class IncomeAccumulation extends Authenticatable
         'income_id',
         'mining_policy_id',
         'accumulated_amount',
+        'next_target_amount',
     ];
 
     public function income()

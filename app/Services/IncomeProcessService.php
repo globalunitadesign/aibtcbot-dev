@@ -27,6 +27,7 @@ class IncomeProcessService
             $progress = IncomeAccumulation::firstOrCreate([
                 'income_id' => $income->id,
                 'mining_policy_id' => $policy->id,
+                'next_target_amount' => $policy->avatar_target_amount,
             ]);
 
             $progress->accumulated_amount += $amount;
@@ -43,11 +44,17 @@ class IncomeProcessService
     {
         $service = new MemberService();
 
-        while ($progress->accumulated_amount >= $policy->avatar_target_amount) {
+        while ($progress->accumulated_amount >= $progress->next_target_amount) {
 
-            Log::channel('avatar')->info('Start to add avatar', ['user_id' => $progress->income->member->user_id, 'accumulated_amount' => $progress->accumulated_amount, 'avatar_count' => $policy->avatar_count]);
+            Log::channel('avatar')->info('Start to add avatar', [
+                'user_id' => $progress->income->member->user_id,
+                'accumulated_amount' => $progress->accumulated_amount,
+                'next_target_amount' => $progress->next_target_amount,
+                'avatar_count' => $policy->avatar_count,
+            ]);
 
             $progress->accumulated_amount -= $policy->avatar_cost;
+            $progress->next_target_amount = $progress->accumulated_amount + $policy->avatar_target_amount;
             $progress->save();
 
             $income->balance -= $policy->avatar_cost;
