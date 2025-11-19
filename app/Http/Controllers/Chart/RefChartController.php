@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Chart;
 use App\Models\AthUser;
 use App\Models\Chart;
 use App\Http\Controllers\Controller;
+use App\Services\ChartService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,7 @@ class RefChartController extends Controller
 
     public function index(Request $request)
     {
-        $chart = new Chart();
+        $chart = new ChartService();
         $chart->mode = 'ref';
 
         if($request->admin){

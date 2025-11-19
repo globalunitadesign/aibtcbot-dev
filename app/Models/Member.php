@@ -87,7 +87,7 @@ class Member extends Authenticatable
 
     public function getReferralCountAttribute()
     {
-        return $this->children()->where('is_valid', 'y')->count();
+        return $this->referrals()->where('is_valid', 'y')->count();
     }
 
     public function getIsReferralAttribute()
