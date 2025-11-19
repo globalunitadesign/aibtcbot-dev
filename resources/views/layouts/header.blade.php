@@ -120,7 +120,7 @@
             <div class="flex-grow-1 text-center">
                 <a class="navbar-brand fs-6 text-black fw-semibold m-0" href="{{ route('home') }}">
                     <h1 class="fs-7 m-0 p-0">
-                        <img src="{{ asset('/images/logos/logo_w.png') }}" height="26" alt="">
+                        <!--img src="{{ asset('/images/logos/logo_w.png') }}" height="26" alt=""-->
                     </h1>
                 </a>
             </div>
