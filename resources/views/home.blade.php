@@ -18,7 +18,7 @@
             <div>
                 <!-- <h4 class="m-0 fs-6 lh-md pe-1">{{ Auth::user()->name }} <span class="fw-normal lh-base">{{ __('messages.member.member_welcome') }}</span></h4> -->
                 <h4 class="m-0 fs-6 pe-1"><span class="fw-normal lh-base">Hello, </span>{{ Auth::user()->name }}</h4>
-                <p class="m-0 pe-1 text-body opacity-50">Make crypto work smarter for you..</p>
+                <p class="m-0 pe-1 text-body opacity-50">Make crypto work smarter for you</p>
             </div>
             <div>
                 <a href="{{ route('profile') }}" class="btn btn-dark w-100 text-decoration-none d-flex p-0">
@@ -275,11 +275,9 @@
             <!-- <h5 class="text-white pt-5 opacity-50">Building Decentralized</h5> -->
             <h5 class="text-white pb-4">Bitcoin is an innovative payment <br> network and  a new kind of money.</h5>
         </div>
-        {{--
         <video class="bg-video__content" autoplay="" muted="" loop="" playsinline="">
             <source src="{{ asset('images/bit_video_bottom.mp4') }}" type="video/mp4" />
         </video>
-        --}}
     </div>
 </main>
 @isset($popup)
