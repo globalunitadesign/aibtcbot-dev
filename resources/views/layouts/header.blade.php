@@ -2,7 +2,7 @@
 <div class="headerContainer container fixed-top" style="height: 1px; z-index: 1040;">
     <div class="offcanvas offcanvas-start vh-100 position-absolute" id="sidebar" tabindex="-1">
         <div class="offcanvas-header py-3 bg-dark">
-            <h1 class="offcanvas-title text-white flex-grow-1 text-center fs-7 my-1"><img src="{{ asset('/images/logos/logo_w.png') }}" height="26" alt="" class="me-2"></h1>
+            <h1 class="offcanvas-title text-white flex-grow-1 text-center fs-7 my-1"><img src="{{ asset('/images/logos/logo_bit_w.svg') }}" height="26" alt="" class="me-2"></h1>
             <button type="button" class="btn-close flex-grow-0" data-bs-dismiss="offcanvas" style="filter: invert(1);"></button>
         </div>
         <div class="offcanvas-body p-0">
@@ -112,7 +112,7 @@
         <div class="d-flex justify-content-between align-items-center w-100">
             @if( !Request::is('home') )
             <a href="{{ url()->previous() }}" class="navbar-brand fs-6 nav-link text-inverse m-0 d-flex justify-content-center align-items-center" style="width: 54px;">
-                <i class="ti ti-chevron-left fs-7"></i>
+                <i class="ti ti-chevron-left fs-7" style="filter: ;"></i>
             </a>
             @else
             <div style="width: 54px;"></div>
@@ -120,12 +120,12 @@
             <div class="flex-grow-1 text-center">
                 <a class="navbar-brand fs-6 text-black fw-semibold m-0" href="{{ route('home') }}">
                     <h1 class="fs-7 m-0 p-0">
-                        <!--img src="{{ asset('/images/logos/logo_w.png') }}" height="26" alt=""-->
+                        <img src="{{ asset('/images/logos/logo_bit_w.svg') }}" height="26" alt="">
                     </h1>
                 </a>
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" style="width: 54px;">
-                <span class="navbar-toggler-icon" style="filter: brightness(160%);"></span>
+                <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>
             </button>
         </div>
     </div>

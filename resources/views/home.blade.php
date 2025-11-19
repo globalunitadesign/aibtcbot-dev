@@ -45,14 +45,14 @@
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="{{ asset('images/slide_bg_01.jpg') }}" class="d-block w-100" alt="...">
+                <img src="{{ asset('images/bit_ban1.jpg') }}" class="d-block w-100" alt="...">
                 <div class="carousel-caption d-none d-md-block">
                     <!-- <h5>First slide label</h5>
                     <p>Some representative placeholder content for the first slide.</p> -->
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="{{ asset('images/slide_bg_02.jpg') }}" class="d-block w-100" alt="...">
+                <img src="{{ asset('images/bit_ban2.jpg') }}" class="d-block w-100" alt="...">
                 <div class="carousel-caption d-none d-md-block">
                     <!-- <h5>Second slide label</h5>
                     <p>Some representative placeholder content for the second slide.</p> -->
@@ -61,7 +61,7 @@
             <div class="carousel-item">
                 <!--a href="{{ route('board.list', ['code' =>'product'])}}"-->
                 <a href="#" onclick="alertModal('{{ __('system.coming_soon_notice') }}')">
-                    <img src="{{ asset('images/slide_bg_03.jpg') }}" class="d-block w-100" alt="...">
+                    <img src="{{ asset('images/bit_ban3.jpg') }}" class="d-block w-100" alt="...">
                     <div class="carousel-caption d-none d-md-block">
                         <!-- <h5>Third slide label</h5>
                         <p>Some representative placeholder content for the third slide.</p> -->
@@ -83,14 +83,14 @@
             <nav>
                 <div class="nav justify-content-center" id="nav-tab" role="tablist">
                     <button class="nav-link nav-asset active ps-3 pe-3" id="nav-asset-tab" data-bs-toggle="tab" data-bs-target="#nav-asset" type="button" role="tab" aria-controls="nav-asset" aria-selected="true">
-                        <h5 class="link-card-tab fs-6 my-3">{{ __('asset.assets_held') }}</h5>
+                        <h5 class="link-card-tab fs-5 my-3">{{ __('asset.assets_held') }}</h5>
                     </button>
                     <button class="nav-link nav-wallet ps-3 pe-3 position-relative divider-w" id="nav-wallet-tab" data-bs-toggle="tab" data-bs-target="#nav-wallet" type="button" role="tab" aria-controls="nav-wallet" aria-selected="false">
-                        <h5 class="link-card-tab fs-6 my-3">{{ __('asset.income_wallet') }}</h5>
+                        <h5 class="link-card-tab fs-5 my-3">{{ __('asset.income_wallet') }}</h5>
                     </button>
                     @if($avatar_data->isNotEmpty())
                     <button class="nav-link nav-wallet ps-3 pe-3 position-relative divider-w" id="nav-avatar-tab" data-bs-toggle="tab" data-bs-target="#nav-avatar" type="button" role="tab" aria-controls="nav-avatar" aria-selected="false">
-                        <h5 class="link-card-tab fs-6 my-3">{{ __('user.avatar') }}</h5>
+                        <h5 class="link-card-tab fs-5 my-3">{{ __('user.avatar') }}</h5>
                     </button>
                     @endif
                 </div>
@@ -270,14 +270,14 @@
             --}}
         </div>
     </div> -->
-    <div class="position-relative" style="height: 600px; margin-bottom: 100px;">
-        <div class="position-absolute w-100 text-center">
-            <h5 class="text-white pt-5 opacity-50">Building Decentralized</h5>
-            <h3 class="text-white pb-4">Innovation<br>Together</h3>
+    <div class="position-relative width100_div" style="height: auto; margin-bottom: 100px;">
+        <div class="position-absolute w-100 text-center video_text">
+            <!-- <h5 class="text-white pt-5 opacity-50">Building Decentralized</h5> -->
+            <h5 class="text-white pb-4">Bitcoin is an innovative payment <br> network and  a new kind of money.</h5>
         </div>
         {{--
         <video class="bg-video__content" autoplay="" muted="" loop="" playsinline="">
-            <source src="{{ asset('images/main_bg_video.mp4') }}" type="video/mp4" />
+            <source src="{{ asset('images/bit_video_bottom.mp4') }}" type="video/mp4" />
         </video>
         --}}
     </div>

@@ -2,15 +2,15 @@
 
 @section('content')
 <div class="page-wrapper login" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed" style="transform: translateY(-71px);">
-    <div class="position-absolute overflow-hidden w-100 min-vh-100 d-flex align-items-center justify-content-center" style="background: #363bf5;">
+    <div class="position-absolute overflow-hidden w-100 min-vh-100 d-flex align-items-center justify-content-center" style="background: #333;">
         <div class="d-flex align-items-center justify-content-center w-100 z-1 my-4">
             <div class="row justify-content-center w-100">
                 <div class="col-11 px-2">
-                    <div class="card mb-0" style="background: rgba(117,142,255,0.2); backdrop-filter: blur(2px);">
+                    <div class="card mb-0" style="background: rgba(215,190,181,0.4); backdrop-filter: blur(2px);">
                         <div class="card-body">
                             <div class="text-center mb-3">
                                 <h1 class="text-white">
-                                    <img src="{{ asset('/images/logos/logo_w.png') }}" alt="" class="login-logo" style="height: 30px; width: auto;">
+                                    <img src="{{ asset('/images/logos/logo_bit_w.svg') }}" alt="" class="login-logo" style="height: 30px; width: auto;">
                                 </h1>
                             </div>
                             <form method="POST" id="ajaxForm" action="{{ route('login') }}">
