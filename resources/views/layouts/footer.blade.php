@@ -3,13 +3,13 @@
         <div class="row text-center py-3">
            @if(auth()->user()->member->is_referral == 'y')
             <div class="col px-1 ">
-                <a href="{{ route('register',['mid' => Auth::user()->id]) }}" class="text-decoration-none text-dark">
+                <a href="{{ route('register',['mid' => 'U'.Auth::user()->id]) }}" class="text-decoration-none text-dark">
                     <img src="{{ asset('/images/icon/icon_menu_register.svg') }}" class="pb-1">
                     <div class="fs-3">{{ __('auth.join') }}</div>
                 </a>
             </div>
             <div class="col px-1">
-                <a href="#" class="text-decoration-none text-dark copyBtn" data-copy="{{ route('register', ['mid' => Auth::user()->id]) }}">
+                <a href="#" class="text-decoration-none text-dark copyBtn" data-copy="{{ route('register', ['mid' => 'U'.Auth::user()->id]) }}">
                     <img src="{{ asset('/images/icon/icon_menu_link.svg') }}" class="pb-1">
                     <div class="fs-3">{{ __('layout.referral_link') }}</div>
                 </a>
